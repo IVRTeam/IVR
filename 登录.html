@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="jquery-3.3.1.min.js">
+		$(document).ready(function(){
+			$("#管理员").click(function(){
+				$("#管理员").attr('onclick',"window.open('admin.html')");
+			});
+		});
+	</script>
+</head>
+<body background = "imagine/test.jpg">
+	账号:<br>
+	<input type="text" name="firstname" >
+	<br>
+	密码:<br>
+	<input type="text" name="lastname" >
+	<br>
+	管理员:<input id="管理员" type="radio" name="管理员">
+	<br><br>
+	<input type="button" value="登录" onclick="window.open('User.html')" />
+	<b></b>
+	<a href="register.html">注册</a>
+</body>
+</html>
