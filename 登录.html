@@ -1,26 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<script src="jquery-3.3.1.min.js">
-		$(document).ready(function(){
-			$("#管理员").click(function(){
-				$("#管理员").attr('onclick',"window.open('admin.html')");
-			});
-		});
-	</script>
+	<meta charset="utf-8"> 
+	<meta name="viewport" content="width=device-width,inital-scale=1">
+	<title>log in</title>
+	<link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">  
+	<script src="jquery-3.3.1.js"></script>
+	<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 </head>
-<body background = "imagine/test.jpg">
-	账号:<br>
-	<input type="text" name="firstname" >
-	<br>
-	密码:<br>
-	<input type="text" name="lastname" >
-	<br>
-	管理员:<input id="管理员" type="radio" name="管理员">
-	<br><br>
-	<input type="button" value="登录" onclick="window.open('User.html')" />
-	<b></b>
-	<a href="register.html">注册</a>
+<body background="imagine/test.jpg">
+
+<form class="form-horizontal row" role="form">
+	<div class="form-group center-block">
+		<label class="col-sm-4 control-label sr-only" >邮箱</label>
+			<div class="col-sm-3">
+				<input type="email" class="form-control" placeholder="User">
+			</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-4 control-label sr-only">密码</label>
+			<div class="col-sm-3">
+				<input type="password" class="form-control" placeholder="password">
+			</div>
+	</div>
+	
+	<div class="form-group">
+		<div class="col-sm-offset-4 col-sm-10">
+			<input type="radio" checked>用户   
+			<input type="radio">管理员
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<div class="col-sm-offset-4 col-sm-10">
+			<button type="submit" class="btn btn-default">登录</button>
+		</div>
+	</div>
+	
+</form>
+
 </body>
 </html>
