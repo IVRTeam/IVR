@@ -6,7 +6,9 @@
 	<title>log in</title>
 	<link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">  
 	<script src="jquery-3.3.1.js"></script>
+	<meta name="renderer" content="webkit">
 	<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="123.css">
 	<script>
 		function OpenUser(){
 			window.open("User.html");
@@ -14,55 +16,61 @@
 		function OpenAdmin(){
 			window.open("admin.html");
 		};
-	</script>
-	<script>
-		$(document).ready(function(){
-			$("#管理员").click(function(){
-				$("#登录").attr("onclick","OpenUser()");
-				});
-		});
-		$(document).ready(function(){
-			$("#管理员").click(function(){
-				$("#登录").attr("onclick","OpenAdmin()");
-				});
-		});
+		function OpenRegister(){
+			window.open("register.html");
+		};
+		function JudgeUser(){
+			var UserNumber=$("#账号").val();
+			var UserPassword=$("#密码").val()
+			var JudgeNumber=$("#验证码").val();
+			if(JudgeNumber!=1024 || UserNumber!=12345 || UserPassword!=12345){
+				window.alert("检查一下你的输入");
+				window.location.reload();
+			}
+			else{
+				OpenUser();
+			}
+		};
+		function JudgeAdmin(){
+			var UserNumber=$("#账号").val();
+			var UserPassword=$("#密码").val()
+			var JudgeNumber=$("#验证码").val();
+			if(JudgeNumber!=1024 || UserNumber!=12345 || UserPassword!=12345){
+				window.alert("检查一下你的输入");
+				window.location.reload();
+			}
+			else{
+				OpenAdmin();
+			}
+		}
+		function change(){
+			$("#登录").attr("onclick","JudgeAdmin()");
+		}
 	</script>
 </head>
 <body background="imagine/test.jpg">
-
-<form class="form-horizontal row" role="form">
-	<div class="form-group center-block">
-		<label class="col-sm-4 control-label sr-only" >邮箱</label>
-			<div class="col-sm-3">
-				<input type="email" class="form-control" placeholder="User">
-			</div>
-	</div>
-	
-	<div class="form-group">
-		<label class="col-sm-4 control-label sr-only">密码</label>
-			<div class="col-sm-3">
-				<input type="password" class="form-control" placeholder="password">
-			</div>
-	</div>
-	
-	<div class="col-sm-offset-4 col-sm-10">
-		<label class="sr-only">
-			用户
-		</label>
-		<input id="用户" type="radio" value="用户" name="UserType" checked />用户
-		<label class="sr-only">
-			管理员
-		</label>
-		<input id="管理员" type="radio" value="管理员" name="UserType" />管理员
-	</div>
-	</br><br>
-	<div class="form-group">
-		<div class="col-sm-offset-4 col-sm-10">
-			<button id="登录" type="submit" class="btn btn-default" onclick="OpenUser()">登录</button>
+	<form class="margin">
+	<div class="set">
+		<h3>智能语音问答</h3>
+		<input id="账号" type="test" class="form-control" placeholder="账号"></br>
+		<input id="密码" type="password" class="form-control" placeholder="密码"></br>
+		<input id="验证码" type="test" class="form-control" placeholder="输入你看到的验证码"></br>
+		<img src="imagine/1024.jpg" width="100%" height="4%"></br>
+		<div align="left" style="float:left">
+			<span class="glyphicon glyphicon-user"></span> 
+			<input type="radio" name="选择" value="1" checked="checked">用户
+		</div>
+		<div align="right">
+			<span class="glyphicon glyphicon-user"></span> 
+			<input type="radio" name="选择" value="2" onclick="change()" class="margin2">管理员
+		</div>
+		<div align="left" style="float:left">
+			<input id="登录" type="submit" value="登录" onclick="JudgeUser()" class="btn btn-info">
+		</div>
+		<div  align="right">
+			<input id="注册" type="submit" value="注册" onclick="OpenRegister()" class="btn btn-info">
 		</div>
 	</div>
-	
-</form>
-
+	</form>
 </body>
 </html>
