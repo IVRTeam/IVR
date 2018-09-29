@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'logins',
     'mains',
+    'calls',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +82,8 @@ DATABASES = {
         'NAME': 'ivr',
         'USER': 'root',
         'PASSWORD': '123456',
-        'HOST': '49.123.107.143',
+        #'HOST': '49.123.107.143',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }

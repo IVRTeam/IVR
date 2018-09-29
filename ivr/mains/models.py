@@ -7,7 +7,7 @@ from django.db import models
 # 权限表
 class Auth(models.Model):
     # 权限名称
-    aname = models.CharField()
+    aname = models.CharField(max_length=20)
     def __str__(self):
         return self.aname
     class Meta:
@@ -15,15 +15,15 @@ class Auth(models.Model):
 # 用户表
 class User(models.Model):
     # 用户账号
-    uid = models.CharField(primary_key=True)
+    uid = models.CharField(primary_key=True, max_length=20)
     # 用户密码
-    pwd = models.CharField()
+    pwd = models.CharField(max_length=20)
     # 用户姓名
-    name = models.CharField()
+    name = models.CharField(max_length=20)
     # 用户手机号
-    phone = models.CharField()
+    phone = models.CharField(max_length=20)
     # 用户注册时间
-    regTime = models.CharField()
+    regTime = models.CharField(max_length=20)
     # 外键
     # 对应用户
     auth = models.ForeignKey(Auth, on_delete=models.DO_NOTHING)
@@ -41,7 +41,7 @@ class User(models.Model):
 # 模板表
 class Templates(models.Model):
     # 模板名称
-    tname = models.CharField()
+    tname = models.CharField(max_length=50)
     # 外键
     # 对应用户
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
@@ -56,15 +56,15 @@ class Templates(models.Model):
 # 模板存储表
 class Template_store(models.Model):
     # 问题id
-    vid = models.CharField()
+    vid = models.CharField(max_length=100)
     # 问题位置
-    pos = models.CharField()
+    pos = models.CharField(max_length=100)
     # 对应按键
-    digit = models.CharField()
+    digit = models.CharField(max_length=20)
     # 对应问题id
-    cid = models.CharField()
+    cid = models.CharField(max_length=100)
     # 是否为最后一个问题，1表示是，0表示不是
-    flag = models.CharField()
+    flag = models.CharField(max_length=20)
     # 外键
     # 对应模板
     template = models.ForeignKey(Templates, on_delete=models.DO_NOTHING)
@@ -78,13 +78,13 @@ class Template_store(models.Model):
 # 消息表
 class Message(models.Model):
     # 标题
-    title = models.CharField()
+    title = models.CharField(max_length=50)
     # 内容
-    content = models.CharField()
+    content = models.CharField(max_length=100)
     # 消息时间
-    time = models.CharField()
+    time = models.CharField(max_length=50)
     # 是否阅读,0表示没有阅读，1表示阅读
-    isRead = models.CharField(default='0')
+    isRead = models.CharField(max_length=20, default='0')
     # 外键
     # 对应用户
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
@@ -97,15 +97,15 @@ class Message(models.Model):
 # 电话清单表
 class Phonelist(models.Model):
     # 电话号码
-    number = models.CharField()
+    number = models.CharField(max_length=50)
     # 姓名
-    name = models.CharField()
+    name = models.CharField(max_length=50)
     # 地区
-    address = models.CharField()
+    address = models.CharField(max_length=200)
     # 等级,数字越大，等级越高，默认为0
-    star = models.CharField(default='0')
+    star = models.CharField(max_length=20, default='0')
     # 导入时间
-    createTime = models.CharField()
+    createTime = models.CharField(max_length=50)
     # 外键
     # 对应用户
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
@@ -118,16 +118,14 @@ class Phonelist(models.Model):
         return phonelist
 # 电话状态表
 class State(models.Model):
-    # 电话号码
-    number = models.CharField()
     # 状态
-    status = models.CharField()
+    status = models.CharField(max_length=50)
     # 呼叫时间
-    callTime = models.CharField()
+    callTime = models.CharField(max_length=50)
     # 呼叫时长
-    callLength = models.CharField()
+    callLength = models.CharField(max_length=50)
     # 用户按键（列表）
-    digits = models.CharField()
+    digits = models.CharField(max_length=100)
     # 外键
     # 对应电话号码
     phone = models.ForeignKey(Phonelist, on_delete=models.DO_NOTHING)
@@ -140,11 +138,11 @@ class State(models.Model):
 # 公告表
 class Notification(models.Model):
     # 标题
-    title = models.CharField()
+    title = models.CharField(max_length=100)
     # 内容
-    content = models.CharField()
+    content = models.CharField(max_length=500)
     # 时间
-    time = models.CharField()
+    time = models.CharField(max_length=50)
     class Meta:
         db_table = "notification"
     @classmethod
