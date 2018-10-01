@@ -1,0 +1,8 @@
+要安装的模块
+
+# Django模块
+pip install Django
+# Mysql数据库模块
+pip install PyMySQL
+# 图形库（用于验证码的图片绘制）
+pip install Pillow
