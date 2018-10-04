@@ -23,7 +23,7 @@ class User(models.Model):
     # 用户手机号
     phone = models.CharField(max_length=20)
     # 用户注册时间
-    regTime = models.CharField(max_length=20)
+    regTime = models.DateField(auto_now=True)
     # 外键
     # 对应用户
     auth = models.ForeignKey(Auth, on_delete=models.DO_NOTHING)
@@ -33,8 +33,8 @@ class User(models.Model):
         db_table = "user"
 
     @classmethod
-    def createUser(cls, uid, pwd, name, phone, regTime, auth):
-        user = cls(uid=uid, pwd=pwd, name=name, phone=phone, regTime=regTime, auth=auth)
+    def createUser(cls, uid, pwd, name, phone, auth):
+        user = cls(uid=uid, pwd=pwd, name=name, phone=phone, auth=auth)
         return user
 
 
@@ -103,9 +103,9 @@ class Phonelist(models.Model):
     # 地区
     address = models.CharField(max_length=200)
     # 等级,数字越大，等级越高，默认为0
-    star = models.CharField(max_length=20, default='0')
+    star = models.CharField(max_length=20, default='普通')
     # 导入时间
-    createTime = models.CharField(max_length=50)
+    createTime = models.DateField(auto_now=True)
     # 外键
     # 对应用户
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
@@ -113,8 +113,8 @@ class Phonelist(models.Model):
         db_table = "phonelist"
 
     @classmethod
-    def createPhonelist(cls, number, name, address, star, createTime, user):
-        phonelist = cls(number=number, name=name, address=address, star=star, createTime=createTime, user=user)
+    def createPhonelist(cls, number, name, address, star, user):
+        phonelist = cls(number=number, name=name, address=address, star=star, user=user)
         return phonelist
 # 电话状态表
 class State(models.Model):

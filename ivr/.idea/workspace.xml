@@ -11,11 +11,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ivr/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2340">
-              <caret line="78" selection-start-line="78" selection-end-line="88" selection-end-column="1" />
+            <state relative-caret-position="651">
+              <caret line="84" column="28" lean-forward="true" selection-start-line="84" selection-start-column="28" selection-end-line="84" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -85,16 +85,16 @@
       <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mains/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3840">
-              <caret line="128" column="8" lean-forward="true" selection-start-line="128" selection-start-column="8" selection-end-line="128" selection-end-column="8" />
+            <state relative-caret-position="210">
+              <caret line="100" column="8" lean-forward="true" selection-start-line="100" selection-start-column="8" selection-end-line="100" selection-end-column="8" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="check_code.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="check_code.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/util/check_code.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-90">
+            <state>
               <caret selection-end-column="19" />
             </state>
           </provider>
@@ -117,9 +117,9 @@
         <option value="$PROJECT_DIR$/mains/urls.py" />
         <option value="$PROJECT_DIR$/logins/urls.py" />
         <option value="$PROJECT_DIR$/calls/urls.py" />
+        <option value="$PROJECT_DIR$/util/check_code.py" />
         <option value="$PROJECT_DIR$/mains/models.py" />
         <option value="$PROJECT_DIR$/ivr/settings.py" />
-        <option value="$PROJECT_DIR$/util/check_code.py" />
       </list>
     </option>
   </component>
@@ -140,6 +140,11 @@
           <expand>
             <path>
               <item name="ivr" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ivr" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ivr" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ivr" type="462c0819:PsiDirectoryNode" />
               <item name="ivr" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -178,6 +183,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.0984375" />
       <window_info anchor="bottom" id="TODO" order="10" />
@@ -597,24 +603,24 @@
     <entry file="file://$PROJECT_DIR$/calls/views.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/ivr/settings.py">
+    <entry file="file://$PROJECT_DIR$/util/check_code.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2340">
-          <caret line="78" selection-start-line="78" selection-end-line="88" selection-end-column="1" />
+        <state>
+          <caret selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mains/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3840">
-          <caret line="128" column="8" lean-forward="true" selection-start-line="128" selection-start-column="8" selection-end-line="128" selection-end-column="8" />
+        <state relative-caret-position="210">
+          <caret line="100" column="8" lean-forward="true" selection-start-line="100" selection-start-column="8" selection-end-line="100" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/util/check_code.py">
+    <entry file="file://$PROJECT_DIR$/ivr/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-90">
-          <caret selection-end-column="19" />
+        <state relative-caret-position="651">
+          <caret line="84" column="28" lean-forward="true" selection-start-line="84" selection-start-column="28" selection-end-line="84" selection-end-column="28" />
         </state>
       </provider>
     </entry>
