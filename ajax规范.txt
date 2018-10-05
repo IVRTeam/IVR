@@ -1,0 +1,28 @@
+/*
+以下为ajax的固定格式，可根据个人需要进行修改或删除
+1、dataType可以为json也可以为普通变量格式。如果为json格式，在views中用JsonResponse方法返回，如果为普通变量，去掉dataType属性，在views中用HttpResponse方法返回
+2、async默认为异步，如果你需要同步的话，再加上这一个属性
+3、cache为true与false 的区别
+（1）True的话会读缓存，可能真的到服务器上。假如上次访问了a.html，第二次的时候得到的是上次访问的a.html的结果，而不是重新到服务器获取。
+（2）false的话会在url后面加一个时间缀，让它跑到服务器获取结果。
+（3）cache只有GET方式的时候有效。
+
+*/
+
+$.ajax({
+        type: 'POST',
+        dataType: 'json',
+        timeout: 3000,
+        url: '/three/',
+        async: false,
+        cache: false,
+        data: {
+            "bid": bid
+        },
+        error: function(msg) {
+            pass;
+        },
+        success: function(data){
+            pass;
+        }
+});
