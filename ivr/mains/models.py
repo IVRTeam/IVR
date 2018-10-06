@@ -22,6 +22,8 @@ class User(models.Model):
     name = models.CharField(max_length=20)
     # 用户手机号
     phone = models.CharField(max_length=20)
+    # 用户头像
+    img = models.CharField(max_length=20, default='static/image/big.jpg')
     # 用户注册时间
     regTime = models.DateField(auto_now=True)
     # 外键
