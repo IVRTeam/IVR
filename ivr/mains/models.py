@@ -22,6 +22,8 @@ class User(models.Model):
     name = models.CharField(max_length=20)
     # 用户手机号
     phone = models.CharField(max_length=20)
+    # 用户头像
+    img = models.CharField(max_length=100)
     # 用户注册时间
     regTime = models.DateField(auto_now=True)
     # 外键
@@ -33,15 +35,15 @@ class User(models.Model):
         db_table = "user"
 
     @classmethod
-    def createUser(cls, uid, pwd, name, phone, auth):
-        user = cls(uid=uid, pwd=pwd, name=name, phone=phone, auth=auth)
+    def createUser(cls, uid, pwd, name, phone, img, auth):
+        user = cls(uid=uid, pwd=pwd, name=name, phone=phone, img=img, auth=auth)
         return user
 
 
 # 模板表
 class Templates(models.Model):
     # 模板名称
-    tname = models.CharField(max_length=50)
+    tname = models.CharField(max_length=100)
     # 外键
     # 对应用户
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
@@ -60,7 +62,7 @@ class Template_store(models.Model):
     # 问题位置
     pos = models.CharField(max_length=100)
     # 对应按键
-    digit = models.CharField(max_length=20)
+    digit = models.CharField(max_length=100)
     # 对应问题id
     cid = models.CharField(max_length=100)
     # 是否为最后一个问题，1表示是，0表示不是
