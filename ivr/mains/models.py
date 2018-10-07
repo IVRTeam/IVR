@@ -35,8 +35,8 @@ class User(models.Model):
         db_table = "user"
 
     @classmethod
-    def createUser(cls, uid, pwd, name, phone, auth):
-        user = cls(uid=uid, pwd=pwd, name=name, phone=phone, auth=auth)
+    def createUser(cls, uid, pwd, name, phone, img, auth):
+        user = cls(uid=uid, pwd=pwd, name=name, phone=phone, img=img, auth=auth)
         return user
 
 

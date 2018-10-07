@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ivr',
         'USER': 'root',
-        'PASSWORD': 'Your password',
+        'PASSWORD': '6968750a',
         'HOST': 'localhost',
         'PORT': '3306',
     }

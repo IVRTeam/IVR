@@ -74,4 +74,4 @@ def gene_code():
 if __name__ == "__main__":
     gene_code()
     # 会把生成的图片存成/tmp/test.png
-    #gene_code('E:/CODE/Django/second/test11/static/img', 'test')
+    #gene_code('E:/CODE/Django/second/test11/static/image', 'test')
