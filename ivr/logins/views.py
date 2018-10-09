@@ -1,5 +1,5 @@
-from django.shortcuts import render,redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, JsonResponse
 from mains.models import User, Auth
 # 引入绘图模块
 from PIL import Image, ImageDraw, ImageFont
@@ -70,7 +70,7 @@ def loginCheck(request):
             request.session['name'] = user.name
             #request.session['auth'] = user.auth
             request.session['img'] = user.img
-            return redirect("/testSession/")
+            return redirect("/logins/testSession/")
             #return render(request, 'myApp/success.html')
         else:
             return redirect('/')
@@ -80,13 +80,20 @@ def register(request):
     return render(request, "logins/register.html")
 def registerCheck(request):
     uid = request.POST.get("uid")
+    # print("uid:" + uid)
     pwd = request.POST.get("pwd")
+    # print("pwd:" + pwd)
     name = request.POST.get("username")
+    # print("name:" + name)
     phone = request.POST.get("phone")
+    # print("phone:" + phone)
     auth = Auth.objects.get(pk=2)
     img = '/static/image/big.jpg'
     user = User.createUser(uid, pwd, name, phone, img, auth)
     user.save()
+    # data = {'status': '200'}
+    # print(data['status'])
+    # return JsonResponse(data)
     return render(request, "logins/login.html")
 def testSession(request):
     uid = request.session.get('uid')
@@ -95,5 +102,7 @@ def testSession(request):
     img = request.session.get('img')
     #data = {'uid': uid, "name": name, "img": img}
     return render(request, 'logins/testSession.html', {'uid': uid, "name": name, "img": img})
+def test(request):
+    return render(request, "logins/test.html")
 
 

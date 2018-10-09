@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
+from logins import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^', include('logins.urls', namespace="login")),
+    url(r'^$', views.login),
+    url(r'^logins/', include('logins.urls', namespace="login")),
 ]
