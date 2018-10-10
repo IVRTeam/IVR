@@ -42,7 +42,7 @@ function btnLogin()
                         bootbox.alert({
                         message: "验证码错误，请重新输入",
                         callback: function () {
-                                $(location).attr('href', '/');
+                                $("#authCode").val('');
                             }
                         })
                     }
@@ -50,7 +50,9 @@ function btnLogin()
                         bootbox.alert({
                         message: "用户名,密码错误，请重新输入",
                         callback: function () {
-                                $(location).attr('href', '/');
+                                $("#uids").val('');
+                                $("#pwds").val('');
+                                $("#authCode").val('');
                             }
                         })
                     }
