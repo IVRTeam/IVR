@@ -21,5 +21,5 @@ from logins import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$', views.login),
-    url(r'^logins/', include('logins.urls', namespace="login")),
+    url(r'^logins/', include('logins.urls', namespace="logins")),
 ]

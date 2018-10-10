@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from mains.models import User, Auth
+# 引入密码加密模块
+from django.contrib.auth.hashers import make_password, check_password
 # 引入绘图模块
 from PIL import Image, ImageDraw, ImageFont
 # 引入随机函数模块
@@ -61,21 +63,24 @@ def vertifycode(request):
 def loginCheck(request):
     code1 = request.POST.get("authCode")
     code2 = request.session["vertify"]
+    data = {'status': '400'}
     if code1 == code2:
         uid = request.POST.get("uid")
         pwd = request.POST.get("pwd")
-        user = User.objects.get(pk=uid)
-        if user and user.pwd == pwd:
+        user = User.objects.filter(pk=uid)
+        if user and check_password(pwd, user[0].pwd):
             request.session['uid'] = uid
-            request.session['name'] = user.name
+            request.session['name'] = user[0].name
             #request.session['auth'] = user.auth
-            request.session['img'] = user.img
-            return redirect("/logins/testSession/")
-            #return render(request, 'myApp/success.html')
+            request.session['img'] = user[0].img
+            data['status'] = 200
+            return JsonResponse(data)
+            # return redirect("/logins/testSession/")
         else:
-            return redirect('/')
+            data['status'] = 500
+            return JsonResponse(data)
     else:
-        return redirect('/')
+        return JsonResponse(data)
 def register(request):
     return render(request, "logins/register.html")
 def registerCheck(request):
@@ -89,12 +94,10 @@ def registerCheck(request):
     # print("phone:" + phone)
     auth = Auth.objects.get(pk=2)
     img = '/static/image/big.jpg'
-    user = User.createUser(uid, pwd, name, phone, img, auth)
+    user = User.createUser(uid, make_password(pwd), name, phone, img, auth)
     user.save()
-    # data = {'status': '200'}
-    # print(data['status'])
-    # return JsonResponse(data)
-    return render(request, "logins/login.html")
+    data = {'status': '200'}
+    return JsonResponse(data)
 def testSession(request):
     uid = request.session.get('uid')
     name = request.session.get('name')
@@ -102,7 +105,17 @@ def testSession(request):
     img = request.session.get('img')
     #data = {'uid': uid, "name": name, "img": img}
     return render(request, 'logins/testSession.html', {'uid': uid, "name": name, "img": img})
+def checkUid(request):
+    uid = request.GET.get("uid")
+    num = User.objects.filter(pk=uid).count()
+    status = '没有'
+    if num > 0:
+        status = '有'
+    data = {'status': status}
+    return JsonResponse(data)
 def test(request):
     return render(request, "logins/test.html")
+def tests(request):
+    return render(request, "logins/tests.html")
 
 
