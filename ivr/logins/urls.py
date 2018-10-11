@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from . import views
 
-app_name = 'login'
+app_name = 'logins'
 
 urlpatterns = [
     # 登录界面
@@ -15,5 +15,7 @@ urlpatterns = [
     url(r'^register/$', views.register),
     url(r'^registerCheck/$', views.registerCheck),
     url(r'^testSession/$', views.testSession),
+    url(r'^checkUid/$', views.checkUid),
     url(r'^test/$', views.test),
+    url(r'^tests/$', views.tests),
 ]
