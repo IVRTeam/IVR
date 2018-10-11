@@ -85,13 +85,9 @@ def register(request):
     return render(request, "logins/register.html")
 def registerCheck(request):
     uid = request.POST.get("uid")
-    # print("uid:" + uid)
     pwd = request.POST.get("pwd")
-    # print("pwd:" + pwd)
     name = request.POST.get("username")
-    # print("name:" + name)
     phone = request.POST.get("phone")
-    # print("phone:" + phone)
     auth = Auth.objects.get(pk=2)
     img = '/static/image/big.jpg'
     user = User.createUser(uid, make_password(pwd), name, phone, img, auth)
