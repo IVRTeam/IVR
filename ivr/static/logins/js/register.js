@@ -36,7 +36,6 @@ function btnAction()
                 {
                     $.ajax({
                         type: 'POST',
-                        dataType: 'json',
                         timeout: 3000,
                         url: '/logins/registerCheck/',
                         async: false,
@@ -50,7 +49,7 @@ function btnAction()
                             alert(msg.status);
                         },
                         success: function(data){
-                            if (data.status=='200')
+                            if (data=='200')
                             {
                                 var dialog = bootbox.dialog({
                                     message: '<p class="text-center">注册成功，正在前往登录界面</p>',
@@ -61,6 +60,18 @@ function btnAction()
                                         $(location).attr('href', '/');
                                     }, 1500);
                                 });
+                            }
+                            else
+                            {
+                                bootbox.alert({
+                                    message: "注册失败，请重新注册",
+                                    callback: function () {
+                                        $("#uids").val('');
+                                        $("#pwds").val('');
+                                        $("#names").val('');
+                                        $("#phones").val('');
+                                    }
+                                })
                             }
                         }
                     });

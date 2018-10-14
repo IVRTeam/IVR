@@ -90,10 +90,13 @@ def registerCheck(request):
     phone = request.POST.get("phone")
     auth = Auth.objects.get(pk=2)
     img = '/static/image/big.jpg'
-    user = User.createUser(uid, make_password(pwd), name, phone, img, auth)
-    user.save()
-    data = {'status': '200'}
-    return JsonResponse(data)
+    data = '200'
+    try:
+        user = User.createUser(uid, make_password(pwd), name, phone, img, auth)
+        user.save()
+    except:
+        data = '500'
+    return HttpResponse(data)
 def testSession(request):
     uid = request.session.get('uid')
     name = request.session.get('name')

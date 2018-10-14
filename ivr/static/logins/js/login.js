@@ -15,16 +15,11 @@ function btnLogin()
                 timeout: 3000,
                 url: '/logins/loginCheck/',
                 async: false,
-                data: {
-                    "uid" : $("#uids").val(),
-                    "pwd" : $("#pwds").val(),
-                    "authCode" : $("#authCode").val(),
-                },
+                data: $('#form').serialize(),
                 error: function(msg) {
                     alert(msg.status);
                 },
                 success: function(data){
-                    console.log("当前状态值为：" + data.status)
                     if (data.status=='200')
                     {
                         var dialog = bootbox.dialog({
