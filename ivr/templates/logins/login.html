@@ -30,7 +30,7 @@
 			<div class="alert alert-danger" id="shows" style="display:none">
 				<button class="close" data-close="alert"></button>
 				<span>
-				 请输入用户名,密码,姓名和手机号码
+				 请输入用户名,密码
 			    </span>
 			</div>
 
@@ -59,13 +59,17 @@
 					<label><img type="image" src="/logins/vertifycode/" id="codeImage" onclick="refresh_check_code(this)" title="图片看不清？点击重新得到验证码" style="cursor:pointer;"/></label>
 				</div>
 			</div>
+
 			<div class="form-actions">
-				<div class="col-xs-5">
-					<button type="button" id="login" class="btn btn-primary" onclick="btnLogin()">登录</button>
-				</div>
-				<div class="col-xs-7">
-                    <a href="/logins/register"><button type="button" id="register" class="btn btn-primary">注册</button></a>
-				</div>
+                <div align="center">
+                    <!--<div class="col-md-9" align="center">-->
+                    <div class="col-md-5" align="center">
+					    <button type="button" id="login" class="btn btn-primary" onclick="btnLogin()">登录</button>
+				    </div>
+                    <div class="col-md-7">
+                        <a href="/logins/register"><button type="button" id="register" class="btn btn-primary">注册</button></a>
+                    </div>
+                </div>
 			</div>
 
 		</form>

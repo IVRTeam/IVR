@@ -7,6 +7,8 @@ function btnLogin()
     if($("#uids").val()=='' || $("#pwds").val()=='' || $("#authCode").val()=='')
     {
         $("#shows").show();
+        src = $("#codeImage").attr("src") + '?';
+        $("#codeImage").attr("src",src);
     }
     else{
         $.ajax({
@@ -37,6 +39,8 @@ function btnLogin()
                         bootbox.alert({
                         message: "验证码错误，请重新输入",
                         callback: function () {
+                                src = $("#codeImage").attr("src") + '?';
+                                $("#codeImage").attr("src",src);
                                 $("#authCode").val('');
                             }
                         })
@@ -45,6 +49,8 @@ function btnLogin()
                         bootbox.alert({
                         message: "用户名,密码错误，请重新输入",
                         callback: function () {
+                                src = $("#codeImage").attr("src") + '?';
+                                $("#codeImage").attr("src",src);
                                 $("#uids").val('');
                                 $("#pwds").val('');
                                 $("#authCode").val('');
