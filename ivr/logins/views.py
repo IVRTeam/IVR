@@ -73,6 +73,7 @@ def loginCheck(request):
             request.session['name'] = user[0].name
             #request.session['auth'] = user.auth
             request.session['img'] = user[0].img
+            request.session.set_expiry(0)
             data['status'] = 200
             return JsonResponse(data)
             # return redirect("/logins/testSession/")
