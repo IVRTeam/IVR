@@ -2,6 +2,11 @@ function refresh_check_code(ths) {
     ths.src += '?';
     //src后面加问好会自动刷新验证码img的src
 }
+function btnRegister()
+{
+	$(location).attr('href', '/logins/register/');
+}
+
 function btnLogin()
 {
     if($("#uids").val()=='' || $("#pwds").val()=='' || $("#authCode").val()=='')
