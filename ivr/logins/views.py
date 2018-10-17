@@ -108,6 +108,7 @@ def testSession(request):
 def checkUid(request):
     uid = request.GET.get("uid")
     num = User.objects.filter(pk=uid).count()
+	#if User.objects.filter(pk=uid).exists：
     status = '没有'
     if num > 0:
         status = '有'
