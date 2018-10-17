@@ -73,6 +73,7 @@ def loginCheck(request):
             request.session['name'] = user[0].name
             #request.session['auth'] = user.auth
             request.session['img'] = user[0].img
+            request.session.set_expiry(0)
             data['status'] = 200
             return JsonResponse(data)
             # return redirect("/logins/testSession/")
@@ -85,19 +86,18 @@ def register(request):
     return render(request, "logins/register.html")
 def registerCheck(request):
     uid = request.POST.get("uid")
-    # print("uid:" + uid)
     pwd = request.POST.get("pwd")
-    # print("pwd:" + pwd)
     name = request.POST.get("username")
-    # print("name:" + name)
     phone = request.POST.get("phone")
-    # print("phone:" + phone)
     auth = Auth.objects.get(pk=2)
     img = '/static/image/big.jpg'
-    user = User.createUser(uid, make_password(pwd), name, phone, img, auth)
-    user.save()
-    data = {'status': '200'}
-    return JsonResponse(data)
+    data = '200'
+    try:
+        user = User.createUser(uid, make_password(pwd), name, phone, img, auth)
+        user.save()
+    except:
+        data = '500'
+    return HttpResponse(data)
 def testSession(request):
     uid = request.session.get('uid')
     name = request.session.get('name')

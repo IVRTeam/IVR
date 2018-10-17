@@ -2,11 +2,18 @@ function refresh_check_code(ths) {
     ths.src += '?';
     //src后面加问好会自动刷新验证码img的src
 }
+function btnRegister()
+{
+	$(location).attr('href', '/logins/register/');
+}
+
 function btnLogin()
 {
     if($("#uids").val()=='' || $("#pwds").val()=='' || $("#authCode").val()=='')
     {
         $("#shows").show();
+        src = $("#codeImage").attr("src") + '?';
+        $("#codeImage").attr("src",src);
     }
     else{
         $.ajax({
@@ -15,16 +22,11 @@ function btnLogin()
                 timeout: 3000,
                 url: '/logins/loginCheck/',
                 async: false,
-                data: {
-                    "uid" : $("#uids").val(),
-                    "pwd" : $("#pwds").val(),
-                    "authCode" : $("#authCode").val(),
-                },
+                data: $('#form').serialize(),
                 error: function(msg) {
                     alert(msg.status);
                 },
                 success: function(data){
-                    console.log("当前状态值为：" + data.status)
                     if (data.status=='200')
                     {
                         var dialog = bootbox.dialog({
@@ -42,6 +44,8 @@ function btnLogin()
                         bootbox.alert({
                         message: "验证码错误，请重新输入",
                         callback: function () {
+                                src = $("#codeImage").attr("src") + '?';
+                                $("#codeImage").attr("src",src);
                                 $("#authCode").val('');
                             }
                         })
@@ -50,6 +54,8 @@ function btnLogin()
                         bootbox.alert({
                         message: "用户名,密码错误，请重新输入",
                         callback: function () {
+                                src = $("#codeImage").attr("src") + '?';
+                                $("#codeImage").attr("src",src);
                                 $("#uids").val('');
                                 $("#pwds").val('');
                                 $("#authCode").val('');
