@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>智能语音应答</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=9">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Bootstrap -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+	<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"/>
+	<link href="{% static 'css/uniform.default.min.css' %}" rel="stylesheet" type="text/css" />
+	<link href="{% static 'css/login-soft.css' %}" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="{% static 'mains/css/style.css' %}"/>
+    <link rel="stylesheet" href="{% static 'mains/css/index_main.css' %}"/>
+    <link rel="stylesheet" href="{% static 'mains/css/calendar.css' %}" media="screen"/> 
+	<style type="text/css">
+    body{
+        position: relative;
+    }
+	#inform{
+          position: absolute;
+		  top: 160px;
+		  left: 20px;
+		  width: 200px;
+		  max-height: 250px;           /* 设置最大高度，当高度达到此值时出现滚动条 */
+		  z-index: 9000;
+		  background-color: #E0E5E5; 
+		  overflow: auto;              /* 自动添加滚动条 */
+		  box-shadow:0px 0px 10px #000;   /* 外阴影 */
+		  display: none;   /* 默认隐藏 */
+	}
+	#informTable{
+		table-layout:fixed;         /* 用于实现表格td自动换行的部分代码*/
+		width: 195px;
+	}
+ 
+	#informTable tr td{
+		width: 195px;
+		height:15px;
+		font-size: 16px;
+		font-family: Georgia;
+		color: #555555;
+		word-wrap:break-word;   /*自动换行*/
+		padding: 0 0 0 0;
+	}
+	#informTable tr td:hover{
+		background-color: #D9D9D9; 
+	}
+	#inform hr{
+		border:1;
+		width: 195px;
+		margin-bottom: 0px;
+	}
+ 
+	</style>
+	<script type="text/javascript">
+      //显示悬浮层
+		function showInform(){
+			document.getElementById("inform").style.display='block';
+		}
+      //隐藏悬浮层
+		function hiddenInform(event){
+			var informDiv = document.getElementById('inform');
+			var x=event.clientX;  
+			var y=event.clientY;  
+			var divx1 = informDiv.offsetLeft;  
+			var divy1 = informDiv.offsetTop;  
+			var divx2 = informDiv.offsetLeft + informDiv.offsetWidth;  
+			var divy2 = informDiv.offsetTop + informDiv.offsetHeight;
+			if( x < divx1 || x > divx2 || y < divy1 || y > divy2){  
+				document.getElementById('inform').style.display='none';  
+			}          
+		}
+	</script>
+
+ </head>
+ <body>
+	<div class="navbar" role="navigation">
+      
+        <!-- 点击收缩左边的菜单栏  + 缩小后左边菜单栏的显示 -->
+        <ul class="nav navbar-nav navbar-actions navbar-left">
+            <li class="visible-md visible-lg"><a href="#"><i class="icon-th-large"></i></a></li>
+            <li class="visible-xs visible-sm"><a href="#"><i class="icon-align-justify"></i></a></li>
+        </ul>
+      
+        <span class="teachCenterTitle">智能语音应答系统</span>
+        <!-- Navbar Left -->    
+        <!-- Navbar Right -->
+        <div class="navbar-right">
+            <!-- Notifications -->
+            <ul class="notifications" avalonctrl="subNotificationsController">
+                <li class="hidden-sm hidden-xs">
+                    <a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
+                        <i class="icon-envelope"></i>
+                        <!--ms-if-->
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header" style="text-align: center;">
+                        <strong>未读消息列表</strong>
+                        </li>    
+                        <li class="dropdown-menu-footer text-center">
+							<!--<a href="../teach/notifications.html">更多消息</a>-->
+							<a>更多消息</a>
+                        </li>
+                    </ul>    
+                </li>
+                <li>
+                    <a href="/mains/quit/" class="dropdown-toggle notification-icon" data-toggle="modal">
+                        <i class="icon-remove"></i>
+                    </a>
+                </li>
+            </ul>    
+            <!-- End Notifications -->
+        </div>
+        <!-- End Navbar Right -->
+    </div>
+	
+	<div class="container-fluid content">
+    	<div class="row">        	
+        	<div class="sidebar">
+				<div class="sidebar-collapse">
+					<!-- Sidebar Header Logo-->
+					<div class="sidebar-header ">
+						<a href="#"><img src="{% static 'image/logo.png' %}" width="7" height="50" alt=""></a>
+					</div>
+					
+					<!-- Sidebar Menu-->
+					<div class="sidebar-menu" style="height: 384px;">
+						<nav id="menu" class="nav-main" role="navigation">
+							<ul class="nav nav-sidebar">
+								<div class="panel-body text-center">
+									<div class="bk-avatar">
+										<a id="view_infor" onMouseOver="javascript:showInform();"  onMouseOut="hiddenInform(event)">
+											<img class="img-circle bk-img-60" alt="" src={{img}}>
+										</a>
+										<!--ms-if-->
+									</div>
+									<div id="inform" onMouseOver="javascript:showInform();"  onMouseOut="hiddenInform(event)">
+										<table id="informTable">
+											<tr>
+												<td>
+				 									用户ID号：{{uid}}													
+												</td>
+											</tr>
+											<tr>
+												<td>
+				 									用户姓名：{{name}}
+													
+												</td>
+											</tr>
+											<tr>
+												<td>
+				 									联系电话：{{phone}}														
+												</td>
+											</tr>
+										</table>
+									</div>
+									<div class="bk-padding-top-10">
+										<i class="icon-circle text-success"></i> 
+										<small>{{name}}</small>
+										<!--ms-if-->
+									</div>
+									<div>
+									<!-- 按钮触发模态框 -->
+										<button class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">修改资料</button>
+										<!-- 模态框（Modal） -->
+										<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+														<h4 class="modal-title" id="myModalLabel">个人资料修改</h4>
+													</div>
+													<div class="modal-body">
+													<label class="control-label visible-ie8 visible-ie9">用户昵称</label>
+													<div class="input-icon">
+															<i class="icon-user"></i>
+															<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="用户昵称" name="name_alt" id="alt_name"/>
+														</div>
+													</div>
+													<div class="modal-body">
+													<label class="control-label visible-ie8 visible-ie9">密码</label>
+													<div class="input-icon">
+															<i class="icon-lock"></i>
+															<input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="新密码" name="pwd_alt" id="alt_pwd"/>
+														</div>
+													</div>
+													<div class="modal-body">
+													<label class="control-label visible-ie8 visible-ie9">联系电话</label>
+													<div class="input-icon">
+															<i class="icon-phone"></i>
+															<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="电话号码" name="phone_alt" id="alt_phone"/>
+														</div>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+														<button type="submit" class="btn btn-primary" onclick="btnModify()">提交更改</button>
+													</div>
+												</div><!-- /.modal-content -->
+											</div><!-- /.modal -->
+										</div>
+									</div>
+								</div>
+								<div class="divider2"></div>							
+								
+								<li class="menuItem">
+									<a href="/mains">
+										<i class="icon-home" aria-hidden="true"></i><span>主界面</span>
+									</a>
+								</li>
+								
+								<li class="menuItem nav-parent">
+									<a>
+										<i class="icon-phone" aria-hidden="true"></i><span>我的呼叫</span>
+									</a>
+									<ul class="nav nav-children">
+										<li><a href="#"><span class="text">号码管理</span></a></li>
+										<li><a href="#"><span class="text">呼叫管理</span></a></li>
+										<li><a href="#"><span class="text">模板管理</span></a></li>
+										
+									</ul>
+								</li>
+								<li class="menuItem nav-parent">
+									<a>
+										<i class="icon-gear" aria-hidden="true"></i><span>我的套餐</span>
+									</a>
+									<ul class="nav nav-children">
+										<li><a href="#"><span class="text">套餐管理</span></a></li>
+										<li><a href="#"><span class="text">套餐购买</span></a></li>                                         
+									</ul>
+								</li>
+								<li class="menuItem">
+								<a href="#">
+										<i class="icon-tag" aria-hidden="true"></i><span>统计分析</span>
+								</a>						 																	
+							</ul>
+						</nav>
+					</div>
+					<!-- End Sidebar Menu-->
+				</div>
+					<!-- Sidebar Footer-->
+					<div class="sidebar-footer">
+						<div class="copyright text-center">
+							
+						</div>
+					</div>
+					<!-- End Sidebar Footer-->
+			</div>   <!-- End Sidebar--> 
+		        
+                
+			<div class="main " style="min-height: 584px;">
+				<!-- 当前地址导航 -->
+				<div class="page-header row">
+					<div class="pull-left">
+						<ol class="breadcrumb visible-sm visible-md visible-lg">
+							<li><a href="#">位置  :</a></li>
+							<li><a href="/mains"><i class=" icon-home"></i>首页</a></li>
+						</ol>
+					</div>
+					<div class="pull-right">
+						<ol class="breadcrumb visible-sm visible-md visible-lg">
+							<li><a href="#"><i class=" icon-building"></i>呼叫管理</a></li>
+							<li><a href="#"><i class="icon-legal"></i>模板管理</a></li>
+							<li><a href="#"><i class="icon-user"></i>套餐管理</a></li>
+							<li><a href="#"><i class="icon-home"></i>套餐购买</a></li>
+						</ol>
+					</div>
+				</div>
+				<!--此处放主面板内容 --> 
+				{% block content %}{% endblock %}
+			</div><!--end main-->
+		</div><!--end row-->
+	</div>
+	<div class="clearfix"></div><!--清除浮动-->
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{%static 'js/jquery.min.js' %}"></script>
+	
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{%static 'js/bootstrap.min.js' %}"></script>
+    
+    <script src="{%static 'mains/js/kg.js' %}"></script>
+	<script src="{% static 'js/bootbox.min.js' %}" type="text/javascript"></script>
+	<script src="{%static 'mains/js/myJS.js' %}"></script>
+</body>
+</html>

@@ -111,6 +111,10 @@ class Phonelist(models.Model):
     # 外键
     # 对应用户
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return self.number
+
     class Meta:
         db_table = "phonelist"
 
@@ -130,12 +134,12 @@ class State(models.Model):
     digits = models.CharField(max_length=200)
     # 外键
     # 对应电话号码
-    phone = models.ForeignKey(Phonelist, on_delete=models.DO_NOTHING)
+    phone = models.ForeignKey(Phonelist, on_delete=models.CASCADE)
     class Meta:
         db_table = "state"
     @classmethod
-    def createState(cls, number, status, callTime, callLength, digits, phone):
-        state = cls(number=number, status=status, callTime=callTime, callLength=callLength, digits=digits, phone=phone)
+    def createState(cls, status, callTime, callLength, digits, phone):
+        state = cls(status=status, callTime=callTime, callLength=callLength, digits=digits, phone=phone)
         return state
 # 公告表
 class Notification(models.Model):
