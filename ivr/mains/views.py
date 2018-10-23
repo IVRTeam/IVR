@@ -17,13 +17,13 @@ def index(request):
         phone = obj.phone
         return render(request, 'mains/index.html',{'uid':uid,'name':name,'img':img, 'phone':phone})
     else:
-        return redirect('/logins/')
+        return redirect('/')
 
 
 def quit(request):
     #清除session
     logout(request)
-    return redirect('/logins/')
+    return redirect('/')
 
 
 def modify(request):
@@ -49,4 +49,4 @@ def modify(request):
             data = {'status':'500'}#表示不是用POST的提交方式，修改失败
             return JsonResponse(data)
     else:
-        return redirect('/logins/')
+        return redirect('/')
