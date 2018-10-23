@@ -5,7 +5,7 @@ app_name = 'logins'
 
 urlpatterns = [
     # 登录界面
-    url(r'^$', views.login),
+    # url(r'^$', views.login),
     # 版本过低
     url(r'^error/$', views.error),
     # 验证码
