@@ -30,19 +30,19 @@ function btnLogin()
                     if (data.status=='200')
                     {
                         var dialog = bootbox.dialog({
-                            message: '<p class="text-center">登录成功，正在前往主界面</p>',
+                            message: '<p class="text-center">登录成功，正在前往主界面...</p>',
                             closeButton: false
                         });
                         dialog.init(function(){
                             setTimeout(function(){
-                                $(location).attr('href', '/logins/testSession/');
+                                $(location).attr('href', '/mains/');
                             }, 1500);
                         });
                     }
                     else if(data.status=='400')
                     {
                         bootbox.alert({
-                        message: "验证码错误，请重新输入",
+                        message: "验证码错误，请重新输入！",
                         callback: function () {
                                 src = $("#codeImage").attr("src") + '?';
                                 $("#codeImage").attr("src",src);
@@ -52,7 +52,7 @@ function btnLogin()
                     }
                     else {
                         bootbox.alert({
-                        message: "用户名,密码错误，请重新输入",
+                        message: "用户名，密码错误，请重新输入！",
                         callback: function () {
                                 src = $("#codeImage").attr("src") + '?';
                                 $("#codeImage").attr("src",src);
