@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^$', views.login),
     url(r'^logins/', include('logins.urls', namespace="logins")),
     url(r'^mains/', include('mains.urls',namespace="mains")),
+    url(r'^calls/', include('calls.urls',namespace="calls")),
 ]

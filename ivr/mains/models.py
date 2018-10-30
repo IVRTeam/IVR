@@ -119,8 +119,8 @@ class Phonelist(models.Model):
         db_table = "phonelist"
 
     @classmethod
-    def createPhonelist(cls, number, name, address, star, user):
-        phonelist = cls(number=number, name=name, address=address, star=star, user=user)
+    def createPhonelist(cls, number, name, address, star, createTime, user):
+        phonelist = cls(number=number, name=name, address=address, star=star, createTime=createTime, user=user)
         return phonelist
 # 电话状态表
 class State(models.Model):

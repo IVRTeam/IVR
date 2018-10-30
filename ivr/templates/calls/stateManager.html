@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{%static 'css/jquery.dataTables.min.css' %}">
+<link type="text/css" rel="stylesheet" href="{%static 'css/dataTables.tableTools.css' %}" />
+<link type="text/css" rel="stylesheet" href="{%static 'css/dataTables.bootstrap.min.css' %}" />
+<link type="text/css" rel="stylesheet" href="{%static 'calls/css/practicebaseapply.css' %}" />
+<link type="text/css" rel="stylesheet" href="{%static 'calls/css/phoneManager.css' %}" />
+
+<table id="states" class="table table-bordered table-condensed">
+    <thead>
+        <tr bgcolor="#ECF1F5">
+            <td colspan="7" id="button-left">
+                <button type="button" class="btn btn-danger" id="delete">删除</button>
+            </td>
+            <td colspan="5">
+                <ul class="dropdown_show">
+                    <li><span class="icon-filter">筛选</span>
+                        <ul id="hide_ul" style="display:none;">
+                            <li>
+                                <form>
+                                    <table class="table">
+                                        <tr>
+                                            <td hidden id="tag_0">${flag}</td>
+                                            <td hidden id="tag_1">${tag}</td>
+                                            <td hidden id="tag_2">${college}</td>
+                                            <td hidden id="tage_0">${tage_0}</td>
+                                            <td>呼叫状态
+                                                <select name="status" id="shaiType" style="width:150px;margin-top:0px;">
+                                                    <option value="-1" id="shaiTypeh" selected>显示全部</option>
+                                                    <option value="-1" id="shaiTypeh" selected>显示全部</option>
+                                                </select>  
+                                            </td>
+                                            <td ${college==null?"":"style='display:none;'"}>申报部门 <select name="status" id="shaiDept"
+                                                style="width:150px;margin-top:0px;">
+                                                    <option value="-1" id="shaiDepth" selected>显示全部</option>
+                                            </select>  
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">呼叫状态 <select name="status" id="callState" style="width:150px;margin-top:0px;">
+                                                    <option value="-1" selected>显示全部</option>
+                                                    <option value="0">呼叫成功</option>
+                                                    <option value="1">呼叫失败</option>
+                                            </select>  
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">呼叫时长 <select name="status" id="callLength" style="width:150px;margin-top:0px;">
+                                                    <option value="-1" selected>显示全部</option>
+                                                    <option value="0">0-30秒</option>
+                                                    <option value="1">30-60秒</option>
+                                                    <option value="2">60-90秒</option>
+                                                    <option value="3">90-120秒</option>
+                                                    <option value="4">120-150秒</option>
+                                                    <option value="5">150-180秒</option>
+                                            </select>  
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">呼叫时间段 <select name="status" id="callSegment" style="width:150px;margin-top:0px;">
+                                                    <option value="-1" selected>显示全部</option>
+                                                    <option value="0">无</option>
+                                                    <option value="1">一星级</option>
+                                                    <option value="2">二星级</option>
+                                                    <option value="3">三星级</option>
+                                                    <option value="4">四星级</option>
+                                                    <option value="5">五星级</option>
+                                            </select>  
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="text-align:center">
+                                                <button type="reset" class="btn btn-primary">重置</button>
+                                                <button type="button" class="btn btn-primary"
+                                                    id="finishshai">完成</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </li>
+                        </ul></li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th></th>
+            <th hidden></th>
+            <th>电话号码</th>
+            <th>呼叫状态</th>
+            <th>呼叫时间</th>
+            <th>呼叫时长</th>
+            <th>用户按键</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody class="text-center" id="thistable"></tbody>
+    <thead>
+        <tr>
+            <td colspan="11"><label><input type="checkbox" name="0" class="ck-all" id="ck1" />全选</label></td>
+        </tr>
+    </thead>
+</table>
+
+
+<!--单个删除确认对话框-->
+<div class="modal fade" id="deleteOneModal" tabindex="-1"
+    role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- data-backdrop="static" 禁止点击弹框后面内容 -->
+    <form class="form-horizontal" role="form">
+        <div class="modal-dialog modal-sm ">
+            <!-- modal-sm 小的  modal-lg 大的 -->
+            <div class="modal-content" style="border:#4D719B 8px solid">
+                <div class="modal-header" style="background:#4D719B; color:#FFF">
+                    <div class="glyphicon glyphicon-remove closeModal"
+                        data-dismiss="modal"></div>
+                    <h6 class="modal-title" id="myModalLabel"></h6>
+                </div>
+                <div class="modal-body" style="text-align: left;">
+                    <h5>您确定要删除吗？</h5>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default"
+                        data-dismiss="modal">取消</button>
+
+                    <button type="button" class="btn btn-primary" id="delSubmit">
+                        确认</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+    </form>
+</div>
+
+
+<!--修改-->
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabe" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border:#3071a9 8px solid">
+            <div class="modal-header" style="background:#3071a9; color:#FFF">
+                <div class="glyphicon glyphicon-remove closeModal" data-dismiss="modal"></div>
+                <h4 class="modal-title text-center" id="myModalLabe3">详情及修改</h4>
+            </div>
+            <div class="modal-body table-responsive">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="" method="post" class="form-horizontal" role="form" id="applyeditform">
+                            <table class="table" id="tableupdate">
+                                <tr>
+                                    <td><input type="text" id="Epid" style="display:none"/></td>
+                                    <td><input type="text" id="Ephones" style="display:none"/></td>
+                                </tr>
+                                <tr>
+                                    <td>电话号码：</td>
+                                    <td><input type="text" id="Ephone" /></td>
+                                </tr>
+                                <tr>
+                                    <td>用户姓名：</td>
+                                    <td><input type="text" id="Ename" /></td>
+                                </tr>
+                                <tr>
+                                    <td>用户地址：</td>
+                                    <td><input type="text" id="Eaddress" /></td>
+                                </tr>
+                                <tr>
+                                    <td>已呼叫次数：</td>
+                                    <td><input type="text" id="Enum" disabled/></td>
+                                </tr>
+                                <tr>
+                                    <td>用户星级：</td>
+                                    <td>
+                                        <select class="form-control"  id="Estar"name="TYPE">
+                                        <option id="0" value="">请选择</option>
+                                        <option value="1">一般</option>
+                                        <option value="2">重要</option>
+                                        <option value="3">非常重要</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>导入时间：</td>
+                                    <td><input type="text" id="EcreateTime" disabled/></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer table-responsive">
+                <center>
+                    <button type="button" class="btn btn-primary" id="saverun">保存</button>
+                    <button type="button" class="btn btn-default" id="cleark" data-dismiss="modal">取消</button>
+                </center>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="{%static 'js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'calls/js/state.js' %}"></script>
