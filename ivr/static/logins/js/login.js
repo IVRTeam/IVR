@@ -63,6 +63,6 @@ function btnLogin()
                         })
                     }
                 }
-            });
+        });
     }
 }

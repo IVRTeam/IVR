@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{%static 'css/jquery.dataTables.min.css' %}">
+<link type="text/css" rel="stylesheet" href="{%static 'css/dataTables.tableTools.css' %}" />
+<link type="text/css" rel="stylesheet" href="{%static 'css/dataTables.bootstrap.min.css' %}" />
+<link type="text/css" rel="stylesheet" href="{%static 'calls/css/practicebaseapply.css' %}" />
+<link type="text/css" rel="stylesheet" href="{%static 'calls/css/phoneManager.css' %}" />
+<table id="calls" class="table table-bordered table-condensed">
+    <thead>
+        <tr bgcolor="#ECF1F5">
+            <td colspan="7" id="button-left">
+                <button type="button" class="btn btn-danger" id="delete">删除</button>
+                <button type="button" class="btn btn-info" id="ZJ">增加</button>
+                <button type="button" class="btn btn-danger" id="HJ">呼叫</button>
+            </td>
+            <td colspan="12" id="button-right">
+                <button type="button" class="btn btn-primary" id="exportButton" data-toggle="modal" data-target="#export">导出</button>
+                <button type="button" class="btn btn-primary" id="importButton" data-toggle="modal" data-target="#import" >导入</button>
+            </td>
+        </tr>
+        <tr>
+            <th></th>
+            <th hidden></th>
+            <th>电话号码</th>
+            <th>用户姓名</th>
+            <th>用户地址</th>
+            <th>已呼叫次数</th>
+            <th>用户星级</th>
+            <th>导入时间</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody class="text-center" id="thistable"></tbody>
+    <thead>
+        <tr>
+            <td colspan="11"><label><input type="checkbox" name="0" class="ck-all" id="ck1" />全选</label></td>
+        </tr>
+    </thead>
+</table>
+<!--增加电话start  -->
+<div class="modal-content" id="add" style="border:#3071a9 8px solid;overflow-x:hidden;">
+<div class="modal-header" style="background:#3071a9; color:#FFF">
+    <div id="closebas" class="glyphicon glyphicon-remove closeModal" data-dismiss="modal" ></div>
+    <h4 class="modal-title text-center" id="myModalLabe2">增加电话</h4>
+</div>
+<div class="modal-body table-responsive" id="modalbody">
+     <div class="row" style="margin-right:0px;">
+            <div class="col-md-12">
+                <form id="myForm" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">电话号码<span class="setTag">*</span></label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="phones" name="phone" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">姓名<span class="setTag">*</span></label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="names" name="name" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">地址<span class="setTag">*</span></label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="addresss" name="address" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">用户等级<span class="setTag">*</span></label>
+                        <div class="col-md-6">
+                            <select class="form-control" id="stars" name="star">
+                                <option id="0" value="">请选择</option>
+                                <option value="1">一般</option>
+                                <option value="2">重要</option>
+                                <option value="3">非常重要</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-8 col-sm-4">
+                            <button id="submitForm_0" type="button" class="btn btn-primary">确定</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--单个删除确认对话框-->
+<div class="modal fade" id="deleteOneModal" tabindex="-1"
+    role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- data-backdrop="static" 禁止点击弹框后面内容 -->
+    <form class="form-horizontal" role="form">
+        <div class="modal-dialog modal-sm ">
+            <!-- modal-sm 小的  modal-lg 大的 -->
+            <div class="modal-content" style="border:#4D719B 8px solid">
+                <div class="modal-header" style="background:#4D719B; color:#FFF">
+                    <div class="glyphicon glyphicon-remove closeModal"
+                        data-dismiss="modal"></div>
+                    <h6 class="modal-title" id="myModalLabel"></h6>
+                </div>
+                <div class="modal-body" style="text-align: left;">
+                    <h5>您确定要删除吗？</h5>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default"
+                        data-dismiss="modal">取消</button>
+
+                    <button type="button" class="btn btn-primary" id="delSubmit">
+                        确认</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+    </form>
+</div>
+
+
+<!--修改-->
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabe" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border:#3071a9 8px solid">
+            <div class="modal-header" style="background:#3071a9; color:#FFF">
+                <div class="glyphicon glyphicon-remove closeModal" data-dismiss="modal"></div>
+                <h4 class="modal-title text-center" id="myModalLabe3">详情及修改</h4>
+            </div>
+            <div class="modal-body table-responsive">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="" method="post" class="form-horizontal" role="form" id="applyeditform">
+                            <table class="table" id="tableupdate">
+                                <tr>
+                                    <td><input type="text" id="Epid" style="display:none"/></td>
+                                    <td><input type="text" id="Ephones" style="display:none"/></td>
+                                </tr>
+                                <tr>
+                                    <td>电话号码：</td>
+                                    <td><input type="text" id="Ephone" /></td>
+                                </tr>
+                                <tr>
+                                    <td>用户姓名：</td>
+                                    <td><input type="text" id="Ename" /></td>
+                                </tr>
+                                <tr>
+                                    <td>用户地址：</td>
+                                    <td><input type="text" id="Eaddress" /></td>
+                                </tr>
+                                <tr>
+                                    <td>已呼叫次数：</td>
+                                    <td><input type="text" id="Enum" disabled/></td>
+                                </tr>
+                                <tr>
+                                    <td>用户星级：</td>
+                                    <td>
+                                        <select class="form-control"  id="Estar"name="TYPE">
+                                        <option id="0" value="">请选择</option>
+                                        <option value="1">一般</option>
+                                        <option value="2">重要</option>
+                                        <option value="3">非常重要</option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>导入时间：</td>
+                                    <td><input type="text" id="EcreateTime" disabled/></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer table-responsive">
+                <center>
+                    <button type="button" class="btn btn-primary" id="saverun">保存</button>
+                    <button type="button" class="btn btn-default" id="cleark" data-dismiss="modal">取消</button>
+                </center>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="{%static 'js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{%static 'calls/js/phoneManager.js' %}"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
