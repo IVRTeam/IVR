@@ -17,4 +17,6 @@ urlpatterns = [
     url(r'^callNumber/$', views.callNumber),
     #显示状态
     url(r'^stateManager/$', views.stateManager),
+    #导入功能
+    url(r'^fileUpload/$', views.fileUpload),
 ]

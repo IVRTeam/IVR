@@ -1,8 +1,10 @@
+# _*_ coding:utf-8 _*_
 from django.shortcuts import render,redirect
 from mains.models import Phonelist, State, User
 from django.http import JsonResponse
 import datetime
 from django.db import connection
+import xlrd
 #from util.dialNumber import dial_number
 
 # Create your views here.
@@ -160,3 +162,52 @@ def stateManager(request):
         return render(request, 'calls/stateManager.html', {'uid': uid, 'name': name, 'img': img, 'phone': phone})
     else:
         return redirect('/')
+
+#导入excel文件
+def fileUpload(request):
+    if request.method == "POST" and request.is_ajax():
+        uid = request.session.get('uid')
+        type = request.POST.get('type')
+        if type == '2':  #删除数据表Phonelist的内容
+            try:
+                phone = Phonelist.objects.filter(user_id = uid)
+                phone.delete()
+            except:
+                data = {'status': '500'}
+                return JsonResponse(data)
+        # 开始解析上传的excel表格
+        f = request.FILES.get('file')
+        wb = xlrd.open_workbook(filename=None,file_contents=f.read())  #打开excel文件读取数据
+        table = wb.sheet_by_index(0)  #获取工作表
+        colnames = table.row_values(0) #行头
+        try:
+            if colnames[4] != '4520ef70-d390-11e8-a545-c3341d76a8a0': #判断是否使用模板文件,可能会溢出
+                data = {'status': '400'}#400表示上传的不是模板文件
+                return JsonResponse(data)
+            else:
+                WorkList = []
+                x = y = z = 0
+                nrows = table.nrows  # 行数
+                for i in range(2, nrows):  # 忽略前2行,0开始
+                    row = table.row_values(i)  # 获取每行的数据
+                    if ''.join(row) != '':
+                        if Phonelist.objects.filter(number=row[0], user_id=uid).exists():  # 电话号码在数据库中重复
+                            x = x + 1  # 重复值计数
+                        else:
+                            y = y + 1  # 非重复值计数
+                            WorkList.append(
+                                Phonelist(number=row[0], name=row[1], address=row[2], star=row[3], user_id=uid))
+                    else:
+                        z = z + 1  # 空行值计数
+                try:
+                    Phonelist.objects.bulk_create(WorkList)  # 批量存进数据库
+                    data = {'status': '200', 'x': x, 'y': y, 'z': z} #200表示上传成功
+                except:
+                    data = {'status': '500'}
+
+        except:
+            data = {'status': '400'} #400表示上传的不是模板文件
+            return JsonResponse(data)
+    else:
+        data = {'status': '500'} #500表示上传失败
+    return JsonResponse(data)
