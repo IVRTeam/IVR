@@ -169,6 +169,7 @@ $(function(){
         {
              bootbox.alert({
                     message : "请选择用户等级",
+                    size : 'small'
                 });
              return;
 		}
