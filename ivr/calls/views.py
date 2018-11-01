@@ -19,8 +19,6 @@ def phoneManager(request):
         return render(request, 'calls/phoneManager.html', {'uid': uid, 'name': name, 'img': img, 'phone': phone})
     else:
         return redirect('/')
-
-
 def datas(request):
     if 'uid' in request.session:
         uid = request.session.get('uid')
@@ -29,19 +27,19 @@ def datas(request):
         pageindex = (int(startIndex) / int(size) + 1)
         draw = request.POST.get("draw")
         order = request.POST.get("order[0][column]")
-        if order == '1':
+        if order == '2':
             order = 'number'
-        elif order == '4':
-            order = 'num'
         elif order == '5':
-            order = 'star'
+            order = 'num'
         elif order == '6':
+            order = 'star'
+        elif order == '7':
             order = 'createTime'
         else:
             order = 'pid'
         orderDir = request.POST.get("order[0][dir]")
         searchValue = request.POST.get("search[value]")
-        print('size:' + size + ';startIndex:' + str(pageindex) + ';draw:' + draw + ';order:' + order + ';orderDir:' + orderDir +';searchValue:' + searchValue + ';uid:'+uid)
+        #print('size:' + size + ';startIndex:' + str(pageindex) + ';draw:' + draw + ';order:' + order + ';orderDir:' + orderDir +';searchValue:' + searchValue + ';uid:'+uid)
         # 取数据
         cursor = connection.cursor()
         cursor.callproc("calls", (int(size), pageindex, order, orderDir, searchValue, uid, 1))
@@ -60,8 +58,6 @@ def datas(request):
         return JsonResponse(data)
     else:
         return redirect('/')
-
-
 # 增加电话号码，status为200表示成功，400表示增加的号码已存在，500表示增加失败
 def addPhone(request):
     if 'uid' in request.session:
@@ -88,21 +84,20 @@ def addPhone(request):
         return JsonResponse(data)
     else:
         return redirect('/')
-
-
 def deletePhone(request):
-    recordstr = request.POST.get("recordstr")
-    cursor = connection.cursor()
-    cursor.callproc("deletePhone", (recordstr, 1))
-    cursor.execute('select @_deletePhone_1')
-    flag = cursor.fetchone()[0]
-    status = '删除成功'
-    if flag == 500:
-        status = '删除失败'
-    data = {'status': status}
-    return JsonResponse(data)
-
-
+    if 'uid' in request.session:
+        recordstr = request.POST.get("recordstr")
+        cursor = connection.cursor()
+        cursor.callproc("deletePhone", (recordstr, 1))
+        cursor.execute('select @_deletePhone_1')
+        flag = cursor.fetchone()[0]
+        status = '删除成功'
+        if flag == 500:
+            status = '删除失败'
+        data = {'status': status}
+        return JsonResponse(data)
+    else:
+        return redirect('/')
 def alterPhone(request):
     if 'uid' in request.session:
         uid = request.session.get('uid')
@@ -122,7 +117,7 @@ def alterPhone(request):
                 status = '400'
                 data = {'status': status}
                 return JsonResponse(data)
-        print('number='+phone+'name='+name+'address='+address+'star='+star+'id='+pid)
+        #print('number='+phone+'name='+name+'address='+address+'star='+star+'id='+pid)
         try:
             # 如果执行异常，会自动跳到except里面去
             cursor = connection.cursor()
@@ -135,32 +130,34 @@ def alterPhone(request):
     else:
         return redirect('/')
 #呼叫从前端传过来的电话号码
-
-
 def callNumber(request):
-    number = request.GET.get("recordstr")
-    number_list = number.strip(',').split(',')
-    print(number_list)
-    for phone in number_list:
-        print("序号：%s   值：%s" % (number_list.index(phone) + 1, phone))
+    if 'uid' in request.session:
+        uid = request.session.get('uid')
+        number = request.GET.get("recordstr")
+        number_list = number.strip(',').split(',')
+        print(number_list)
+        for phone in number_list:
+            print("序号：%s   值：%s" % (number_list.index(phone) + 1, phone))
+        data = {"data": '200'}
+        return JsonResponse(data)
 
-    #测试时间
-    callTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print("callTime is " + callTime)
-    data = {"data": '200'}
-    return JsonResponse(data)
+    else:
+        return redirect('/')
 # 呼叫从前端传过来的电话号码
 # def callNumber(request):
-#     number = request.GET.get("recordstr")
-#     number_list = number.strip(',').split(',')
-#     for phone in number_list:
-#         print('dial number is ' + phone)
-#         dial_number(phone)
-#     data = {"data": '200'}
-#     return JsonResponse(data)
+#     if 'uid' in request.session:
+#         uid = request.session.get('uid')
+#         number = request.GET.get("recordstr")
+#         number_list = number.strip(',').split(',')
+#         for phone in number_list:
+#             print('dial number is ' + phone)
+#             dial_number(phone, uid)
+#         data = {"data": '200'}
+#         return JsonResponse(data)
+#     else:
+#         return redirect('/')
 
 # 显示电话状态页面
-
 def stateManager(request):
     if 'uid' in request.session:
         uid = request.session.get('uid')
@@ -169,6 +166,65 @@ def stateManager(request):
         obj = User.objects.get(uid=uid)
         phone = obj.phone
         return render(request, 'calls/stateManager.html', {'uid': uid, 'name': name, 'img': img, 'phone': phone})
+    else:
+        return redirect('/')
+def stateDatas(request):
+    if 'uid' in request.session:
+        uid = request.session.get('uid')
+        size = request.POST.get("length")
+        startIndex = request.POST.get("start")
+        pageindex = (int(startIndex) / int(size) + 1)
+        draw = request.POST.get("draw")
+        order = request.POST.get("order[0][column]")
+        callState = request.POST.get("callState")
+        lengthStart = request.POST.get("lengthStart")
+        lengthEnd = request.POST.get("lengthEnd")
+        timeStart = request.POST.get("timeStart")
+        timeEnd = request.POST.get("timeEnd")
+        if order == '2':
+            order = 'number'
+        elif order == '3':
+            order = 'status'
+        elif order == '4':
+            order = 'callTime'
+        elif order == '5':
+            order = 'callLength'
+        else:
+            order = 'id'
+        orderDir = request.POST.get("order[0][dir]")
+        searchValue = request.POST.get("search[value]")
+        # print('size:' + size + ';startIndex:' + str(
+        #     pageindex) + ';draw:' + draw + ';order:' + order + ';orderDir:' + orderDir + ';searchValue:' + searchValue + ';uid:' + uid + ';callState:' + callState + ';lengthStart:' + lengthStart + ';lengthEnd:' + lengthEnd + ';timeStart:' + timeStart + ';timeEnd:' + timeEnd)
+        # 取数据
+        cursor = connection.cursor()
+        cursor.callproc("states", (int(size), pageindex, order, orderDir, searchValue, uid, callState, lengthStart, lengthEnd, timeStart, timeEnd, 1))
+        # cursor.callproc("calls", (2, startIndex, 'pid', orderDir, searchValue, '2014', 1))
+        list = []
+        states = cursor.fetchall()
+        for st in states:
+            list.append(
+                {"sid": st[0], "phone": st[1], "status": st[2], "callTime": st[3], "callLength": st[4], "digits": st[5]})
+        cursor.execute('select @_states_11')
+        numbers = cursor.fetchone()[0]
+        data = {"draw": draw, "recordsFiltered": numbers, "recordsTotal": numbers, "data": list}
+        cursor.close()
+        connection.close()
+        return JsonResponse(data)
+    else:
+        return redirect('/')
+# 删除呼叫状态
+def deleteState(request):
+    if 'uid' in request.session:
+        recordstr = request.POST.get("recordstr")
+        cursor = connection.cursor()
+        cursor.callproc("deleteState", (recordstr, 1))
+        cursor.execute('select @_deleteState_1')
+        flag = cursor.fetchone()[0]
+        status = '删除成功'
+        if flag == 500:
+            status = '删除失败'
+        data = {'status': status}
+        return JsonResponse(data)
     else:
         return redirect('/')
 

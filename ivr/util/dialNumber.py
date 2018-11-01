@@ -3,6 +3,7 @@ from ESL import *
 from threading import Thread
 from mains.models import Phonelist, State
 import datetime
+from django.db import connection
 
 # 定义多线程（异步）
 def async(f):
@@ -108,7 +109,7 @@ def dial(con, cmd_out, number):
     return duration, keys
 
 @async
-def dial_number(number):
+def dial_number(number, uid):
     fs_ip = '127.0.0.1'
     fs_esl_port = '8021'
     fs_esl_auth = 'ClueCon'
@@ -123,12 +124,13 @@ def dial_number(number):
         digits = keys
         if duration == "0":
             status = '呼叫失败'
-            digits = ''       
-        callLength = duration + '秒'
+            digits = ''
         # 这一行有问题，电话号码并不是唯一值，应该将用户id和电话号码一起传过来
-        phone = Phonelist.objects.get(number=number)
-        sta = State.createState(status, callTime, callLength, digits, phone)
-        sta.save()
+        cursor = connection.cursor()
+        cursor.callproc("addState", (uid, number, status, callTime, duration, digits))
+        # phone = Phonelist.objects.get(number=number)
+        # sta = State.createState(status, callTime, callLength, digits, phone)
+        # sta.save()
     #
     # else:
     #     duration = "0"
