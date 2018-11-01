@@ -1,10 +1,11 @@
 # _*_ coding:utf-8 _*_
 from django.shortcuts import render,redirect
 from mains.models import Phonelist, State, User
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 import datetime
 from django.db import connection
 import xlrd
+import xlwt
 #from util.dialNumber import dial_number
 
 # Create your views here.
@@ -173,7 +174,7 @@ def stateManager(request):
 
 
 #导入excel文件
-def fileUpload(request):
+def fileImport(request):
     if 'uid' in request.session:
         if request.method == "POST" and request.is_ajax():
             uid = request.session.get('uid')
@@ -228,5 +229,48 @@ def fileUpload(request):
         else:
             data = {'status': '500'} #500表示上传失败
         return JsonResponse(data)
+    else:
+        return redirect('/')
+
+#导出excel文件
+def fileExport(request):
+    if 'uid' in request.session:
+        uid = request.session.get('uid')
+        star = request.GET.get('star')
+        if star == '0': #全部星级
+            ph_list = Phonelist.objects.filter(user_id=uid).values_list('number','name','address','star','createTime','user_id')
+        else: #过滤星级
+            ph_list = Phonelist.objects.filter(user_id=uid,star=star).values_list('number','name','address','star','createTime','user_id')
+
+        # 设置HttpResponce的类型
+        response = HttpResponse(content_type='application/vnd.ms.excel')
+        response['Content-Disposition'] = 'atttachment;filename=phonelists.xls' #返回下载文件的名称
+        # new一个工作簿文件
+        workbook = xlwt.Workbook(encoding='utf-8')
+        #new 一个sheet
+        mysheet =workbook.add_sheet(u'电话清单')
+        #设置表头样式
+        alignment = xlwt.Alignment()
+        alignment.horz = xlwt.Alignment.HORZ_CENTER
+        alignment.vert = xlwt.Alignment.VERT_CENTER
+        style = xlwt.XFStyle()  # Create Style
+        style.alignment = alignment  # 给样式添加文字居中属性
+        style.font.height = 200  # 设置字体大小10px
+
+        rows = ph_list
+        cols = 6 #每行的列
+        mysheet.write_merge(0, 0, 0, 5, '电话号码信息统计表',style)
+        title = ['电话号码','用户姓名','电话地区','用户星级','导入时间','用户账号']#表头名
+        for c in range(len(title)):
+            mysheet.write(1,c,title[c],style) #表头写进第一行
+
+        if ph_list.count()>0: #生成excel文件
+            for r in range(0,len(rows)): #对行进行遍历
+                for c in range(0,cols): #对列进行遍历
+                    mysheet.write(r+2,c,str(rows[r][c]))
+        else:
+            mysheet.write_merge(2, 2, 0, 5, '没有符合条件的电话清单', style)
+        workbook.save(response)
+        return response
     else:
         return redirect('/')

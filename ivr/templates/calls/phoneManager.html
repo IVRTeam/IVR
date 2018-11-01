@@ -16,9 +16,9 @@
                 <button type="button" class="btn btn-danger" id="HJ">呼叫</button>
             </td>
             <td colspan="12" id="button-right">
-                <a href="{%static 'calls/PhoneModel.xltx' %}" download="PhoneModel.xltx" class="btn btn-primary">点击下载模板文件</a>
                 <button type="button" class="btn btn-primary" id="exportButton" data-toggle="modal" data-target="#export">导出</button>
                 <button type="button" class="btn btn-primary" id="importButton" data-toggle="modal" data-target="#import" >导入</button>
+                <a href="{%static 'calls/PhoneModel.xltx' %}" id="LinkButton" download="PhoneModel.xltx" class="btn btn-primary" >点击下载导入模板</a>
             </td>
         </tr>
         <tr>
@@ -26,7 +26,7 @@
             <th hidden></th>
             <th>电话号码</th>
             <th>用户姓名</th>
-            <th>用户地址</th>
+            <th>电话地区</th>
             <th>已呼叫次数</th>
             <th>用户星级</th>
             <th>导入时间</th>
@@ -194,10 +194,11 @@
                 <h5 class="modal-title" id="myModalLabel">请选择要导入的文件</h5>
             </div>
             <center>
-                请选择文件的上传类型:&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="radio" name="uptype" value="1" checked="checked">新增&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="radio" name="uptype" value="2">覆盖
-                <div class="modal-body" id="exportxsl" style="height:60px;">
+                <div class="modal-body" id="exportxsl" style="height:100px;">
+                    请选择文件的上传类型:&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="uptype" value="1" checked="checked">新增&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="uptype" value="2">覆盖
+                    <br><br>
                     <input type="file" name="file" id="btn_file"/>
                 </div>
             </center>
@@ -208,6 +209,43 @@
         </div>
     </div>
 </div>
+
+<!--导出-->
+<div class="modal fade" id="export" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:400px;height:600px;">
+        <div class="modal-content" style="border:#3071a9 8px solid;">
+            <div class="modal-header" style="background:#3071a9; color:#FFF">
+                <div id="daoclose" class="glyphicon glyphicon-remove closeModal"
+                    data-dismiss="modal"></div>
+                <h4 class="modal-title" id="myModalLabel">请选择导出的电话清单</h4>
+            </div>
+            <form action="/calls/fileExport/" method="get">
+                <div class="modal-body" id="daochu">
+                    <table>
+                        <tr>
+                            <td>用户星级:</td>
+                            <td>
+                                <select class="form-control" id="daostarh" name="star">
+                                    <option value="0">全部</option>
+                                    <option value="1">一星级</option>
+                                    <option value="2">二星级</option>
+                                    <option value="3">三星级</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <center>
+                        <button type="button" class="btn btn-default" id="daoclose" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary" id="confirmButton">确定</button>
+                    </center>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="{%static 'js/jquery.dataTables.min.js' %}"></script>
 <script type="text/javascript" src="{%static 'calls/js/phoneManager.js' %}"></script>
 {% endblock %}
