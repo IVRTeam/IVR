@@ -160,7 +160,7 @@ $(function(){
 		if(address=="")
         {
              bootbox.alert({
-                    message : "请填写地址",
+                    message : "请填写地区",
                     size : 'small'
                 });
              return;
@@ -330,7 +330,7 @@ $(function(){
 		if(address=="")
         {
              bootbox.alert({
-                    message : "请填写地址",
+                    message : "请填写地区",
                     size : 'small'
                 });
              return;
@@ -427,8 +427,13 @@ $(function(){
         });
     });
 
+    // 导入按钮初始化
+    $("#importButton").click(function() {
+        $("#btn_file").val("");//清空文件框的内容
+        $("input[name='uptype']")[0].checked="checked";//选择框恢复初始设置
+    });
 
-    //导入文件功能
+    //确认导入功能
     $("#certainimport").click(function(){
     //将文件以form_data方式提交
         var form_data = new FormData();
@@ -454,13 +459,10 @@ $(function(){
         var fireStr = $("#btn_file").val();
         var fireL = fireStr.lastIndexOf(".");
         fireStr = fireStr.substring(fireL);
+        $('#import').modal('hide');//模态框消失
         if(fireStr != ".xls" && fireStr!=".xlsx"){
             bootbox.alert({
                 message:"请导入excel格式文档，后缀名为.xls或.xlsx",
-                callback: function(){
-                    $("#btn_file").val("");//清空文件框的内容
-                    $("input[name='uptype']")[0].checked="checked";//选择框恢复初始设置
-                }
             });
             return;
         }
@@ -470,12 +472,12 @@ $(function(){
             dataType:'json',
             timeout:3000,
             data:form_data,
-            url:'/calls/fileUpload/',
+            url:'/calls/fileImport/',
             processData:false, // 告诉jQuery不要去处理发送的数据
             contentType:false, // 告诉jQuery不要去设置Content-Type请求头
             error:function(){
                 bootbox.alert({
-                    message:"导入失败",
+                    message:"导入失败,请重新导入！",
                     size:'small'
                 });
             },
@@ -484,9 +486,6 @@ $(function(){
                     bootbox.alert({
                         message: "数据导入成功,导入"+ data.y +" 条,重复" + data.x + "条,有" + data.z + "行为空!",
                         callback: function(){
-                            $("#btn_file").val("");//清空文件框的内容
-                            $("input[name='uptype']")[0].checked="checked";//选择框恢复初始设置
-                            $('#import').modal('hide');//模态框消失
                             page.draw(false);
                         }
                     });
@@ -495,9 +494,6 @@ $(function(){
                     bootbox.alert({
                         message: "数据导入成功,导入"+ data.y +" 条,有" + data.z + "行为空!",
                         callback: function(){
-                            $("#btn_file").val("");//清空文件框的内容
-                            $("input[name='uptype']")[0].checked="checked";//选择框恢复初始设置
-                            $('#import').modal('hide');//模态框消失
                             page.draw(false);
                         }
                     });
@@ -505,24 +501,28 @@ $(function(){
                 else if(data.status == '400'){
                     bootbox.alert({
                         message: "您上传的不是模板文件，请先下载模板文件再上传！",
-                        callback: function(){
-                            $("#btn_file").val("");//清空文件框的内容
-                            $("input[name='uptype']")[0].checked="checked";//选择框恢复初始设置
-                            $('#import').modal('hide');//模态框消失
-                        }
                     });
                 }
                 else{
                      bootbox.alert({
                         message:"导入失败,请重新导入！",
                         size:'small',
-                        callback: function(){
-                            $("#btn_file").val("");//清空文件框的内容
-                            $("input[name='uptype']")[0].checked="checked";//选择框恢复初始设置
-                        }
                     });
                 }
             }
         });
     });
+
+
+    // 导出按钮初始化
+    $("#exportButton").click(function() {
+       //选项恢复初始值
+        $("#daostarh").val("0");
+    });
+
+    // 确认导出
+    $("#confirmButton").click(function(){
+        $("#export").modal('hide');
+    });
+
 });

@@ -7,5 +7,7 @@ pip install PyMySQL
 # 图形库（用于验证码的图片绘制）
 pip install Pillow
 
-进入xlrd-1.1.0的本地目录下，如D:\Software\xlrd-1.1.0
-setup.py install
+#excel文件的读模块
+pip install xlrd
+#excel文件的写模块
+pip install xlwt
