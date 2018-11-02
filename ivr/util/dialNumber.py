@@ -127,7 +127,7 @@ def dial_number(number, uid):
             digits = ''
         # 这一行有问题，电话号码并不是唯一值，应该将用户id和电话号码一起传过来
         cursor = connection.cursor()
-        cursor.callproc("addState", (uid, number, status, callTime, duration, digits))
+        cursor.callproc("addState", (uid, number, status, callTime, duration, str(digits)))
         # phone = Phonelist.objects.get(number=number)
         # sta = State.createState(status, callTime, callLength, digits, phone)
         # sta.save()

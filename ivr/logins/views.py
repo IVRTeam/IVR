@@ -76,7 +76,6 @@ def loginCheck(request):
             request.session.set_expiry(0)
             data['status'] = 200
             return JsonResponse(data)
-            # return redirect("/logins/testSession/")
         else:
             data['status'] = 500
             return JsonResponse(data)

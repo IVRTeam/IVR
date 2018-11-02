@@ -2,3 +2,5 @@
 2、我先建立了3个app，logins负责登录、注册，mains负责主界面，calls负责呼叫管理，请各自开发人员在自己的app下面进行开发。
 3、每个人把自己在开发中需要安装的模块写到requirements.txt文档中，方便别人开发时下载。
 4、util文件夹下存放的是工具类，比如验证码
+5、部署到linux下验证码中字体路径要改一下
+font_path = '/usr/share/fonts/truetype/ttf-khmeros-core/KhmerOSsys.ttf'
