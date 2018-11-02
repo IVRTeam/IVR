@@ -5,16 +5,22 @@ $(function(){
             "serverSide" : true,
             "bSort" : false,
             //"aLengthMenu" : [ 5, 10, 20, 30 ], // 动态指定分页后每页显示的记录数。
-            "aLengthMenu" : [ 3, 5, 10, 15, 20 ],
+            "aLengthMenu" : [5, 10, 15, 20, 25, 30],
             "lengthChange" : true, // 是否启用改变每页显示多少条数据的控件
-            //"iDisplayLength" : 10, // 默认每页显示多少条记录
-            "iDisplayLength" : 5,
+            "iDisplayLength" : 10, // 默认每页显示多少条记录
             "ordering":true,
             "filter" : true,
             "dom" : 'ftipr<"bottom"l>',
             "ajax" : {
                 "url" : "/calls/stateDatas/",
-                "type" : "POST"
+                "type" : "POST",
+                "data" : {
+                            "callState" : '',
+                            "lengthStart" : '',
+                            "lengthEnd" : '',
+                            "timeStart" : '',
+                            "timeEnd" : ''
+                         }
             },
             "aoColumns" : [
                 { // aoColumns设置列时，不可以任意指定列，必须列出所有列。
@@ -39,13 +45,13 @@ $(function(){
                 },
                 {
                     "mData" : "status",
-                    "orderable" : false, // 禁用排序
+                    "orderable" : true, // 禁用排序
                     "sDefaultContent" : "",
                     "sWidth" : "6%",
                 },
                 { // aoColumns设置列时，不可以任意指定列，必须列出所有列。
                     "mData" : "callTime",
-                    "orderable" : false, // 禁用排序
+                    "orderable" : true, // 禁用排序
                     "sDefaultContent" : "",
                     "sWidth" : "10%"
                 },
@@ -57,23 +63,11 @@ $(function(){
                 },
                 {
                     "mData" : "digits",
-                    "orderable" : true, // 禁用排序
+                    "orderable" : false, // 禁用排序
                     "sDefaultContent" : "",
                     "sWidth" : "10%",
 
-                },
-				{
-                    "mData" : "id",
-                    "orderable" : false, // 禁用排序
-                    "sDefaultContent" : "",
-                    "sWidth" : "8%",
-                    "render" : function(data,type, row) {
-                        obj.push(row);
-                        return data = '<span id="updateDetail" class="icon-edit edit-color" value="'
-                                + (obj.length - 1)
-                                + '"></span>';
-                        }
-				}],
+                }],
             "columnDefs" : [ {
                     "orderable" : false, // 禁用排序
                     "targets" : [ 0 ], // 指定的列
@@ -106,7 +100,7 @@ $(function(){
     {
         if ($(this).prop("checked") == true) {
             var checked = [];
-            $("#calls input[name='recordcheck']").prop("checked", true);
+            $("#states input[name='recordcheck']").prop("checked", true);
             /*$("#calls input[name='recordcheck']").each(function () {
                 //将checkbox中的val放入变量中
                 checked.push($(this).val());
@@ -114,7 +108,7 @@ $(function(){
             alert(checked);*/
         }
         else {
-            $("#calls input[name='recordcheck']").prop("checked", false);
+            $("#states input[name='recordcheck']").prop("checked", false);
         }
     });
 
@@ -175,103 +169,167 @@ $(function(){
             }
         });
     });
-
-    var index;
-    // 点击修改图标，填充修改模态框中的内容
-    $(document).on("click", "#updateDetail", function() {
-        index = $(this).attr("value");
-        $("#Epid").val(obj[index].pid);
-        $("#Ephones").val(obj[index].number);
-        $("#Ephone").val(obj[index].number);
-        $("#Ename").val(obj[index].name);
-        $("#Eaddress").val(obj[index].address);
-        $("#Enum").val(obj[index].num);
-        $("#Estar").val(obj[index].star);
-        $("#EcreateTime").val(obj[index].createTime);
-        $("#edit").modal('show');
+    // 点击筛选按钮，弹出筛选框
+    $("#filter").click(function() {
+        $("#callState").val("");
+        $("#callLength").val("");
+        var myDate = new Date();
+        //获取当前年
+        var year=myDate.getFullYear();
+        //获取当前月
+        var month=myDate.getMonth()+1;
+        //获取当前日
+        var date=myDate.getDate();
+        if (month<'10')
+        {
+            month='0'+ month;
+        }
+        if (date<'10')
+        {
+            date='0'+ date;
+        }
+        var now=year+'-'+month+"-"+date;
+        $("#demo").val(now);
+        $("#demo2").val(now);
+        $("#filters").modal('show');
     });
 
-    //确认修改
-    $("#saverun").click(function() {
-        var pid=$("#Epid").val();
-        var phones=$("#Ephones").val();
-        var phone=$("#Ephone").val();
-        var name=$("#Ename").val();
-        var address=$("#Eaddress").val();
-        var star=$("#Estar").val();
-        var flag="1";
-        if(phone=="")
+    //点击筛选完成按钮
+    $("#finishshai").click(function() {
+        obj=[];
+        var callState = $("#callState option:selected").val();
+        var lengthStart = $("#callLength option:selected").val();
+        if (lengthStart == "")
         {
-             bootbox.alert({
-                    message : "请填写电话号码",
-                    size : 'small'
-                });
-             return;
-		}
-		if(name=="")
+            lengthEnd="";
+        }
+        else
         {
-             bootbox.alert({
-                    message : "请填写姓名",
-                    size : 'small'
+            lengthEnd=parseInt(lengthStart)+30;
+        }
+        var timeStart = $("#demo").val();
+        var timeEnd = $("#demo2").val();
+        console.log("callState:"+callState+";lengthStart:"+lengthStart+";lengthEnd:"+lengthEnd+";timeStart:"+timeStart+";timeEnd:"+timeEnd);
+
+        if (timeStart == "") {
+            bootbox.alert({
+                message: "请选择呼叫开始时间!",
+                size: 'small'
+            });
+        } else if (timeEnd == "") {
+            bootbox.alert({
+                message: "请选择呼叫结束时间!",
+                size: 'small'
+            });
+        }
+        else {
+            if (timeStart > timeEnd) {
+                bootbox.alert({
+                    message: "日期时间段选择错误",
+                    size: 'small'
                 });
-             return;
-		}
-		if(address=="")
-        {
-             bootbox.alert({
-                    message : "请填写地址",
-                    size : 'small'
-                });
-             return;
-		}
-		if(star=="")
-        {
-             bootbox.alert({
-                    message : "请选择用户等级",
-                    size : 'small'
-                });
-             return;
-		}
-		if(phones!=phone)
-		{
-		    flag="0";
-		}
-        $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                timeout: 3000,
-                url: '/calls/alterPhone/',
-                async: false,
-                data: {
-                    "pid": pid,
-                    "phone": phone,
-                    "name": name,
-                    "address": address,
-                    "star": star,
-                    "flag": flag
-                },
-                error: function(msg) {
-                    alert(msg.status);
-                },
-                success: function(data){
-                    if (data.status=='200')
-                    {
-                        bootbox.alert({
-                        message: "修改成功!",
-                        callback: function () {
-                                $("#edit").modal('hide');
-                                page.draw(false);
+                return false;
+            }
+            page = $('#states').DataTable({
+                        "processing" : true,
+                        "serverSide" : true,
+                        "bSort" : false,
+                        "bDestroy" : true,
+                        //"aLengthMenu" : [ 5, 10, 20, 30 ], // 动态指定分页后每页显示的记录数。
+                        "aLengthMenu" : [5, 10, 15, 20, 25, 30],
+                        "lengthChange" : true, // 是否启用改变每页显示多少条数据的控件
+                        "iDisplayLength" : 10, // 默认每页显示多少条记录
+                        "ordering":true,
+                        "filter" : true,
+                        "dom" : 'ftipr<"bottom"l>',
+                        "ajax" : {
+                            "url" : "/calls/stateDatas/",
+                            "type" : "POST",
+                            "data" : {
+                                        "callState" : callState,
+                                        "lengthStart" : lengthStart,
+                                        "lengthEnd" : lengthEnd,
+                                        "timeStart" : timeStart,
+                                        "timeEnd" : timeEnd
+                                     }
+                        },
+                        "aoColumns" : [
+                            { // aoColumns设置列时，不可以任意指定列，必须列出所有列。
+                                "mData" : "id",
+                                "orderable" : false, // 禁用排序
+                                "sDefaultContent" : "",
+                                "sWidth" : "4%"
+                            },
+                            { // aoColumns设置列时，不可以任意指定列，必须列出所有列。
+                                "mData" : "sid",
+                                "visible" : false,
+                                "orderable" : false, // 禁用排序
+                                "sDefaultContent" : "",
+                                "sWidth" : "4%"
+                            },
+                            {
+                                "mData" : "phone",
+                                "orderable" : true, // 禁用排序
+                                "sDefaultContent" : "",
+                                "sWidth" : "10%",
+
+                            },
+                            {
+                                "mData" : "status",
+                                "orderable" : true, // 禁用排序
+                                "sDefaultContent" : "",
+                                "sWidth" : "6%",
+                            },
+                            { // aoColumns设置列时，不可以任意指定列，必须列出所有列。
+                                "mData" : "callTime",
+                                "orderable" : true, // 禁用排序
+                                "sDefaultContent" : "",
+                                "sWidth" : "10%"
+                            },
+                            { // aoColumns设置列时，不可以任意指定列，必须列出所有列。
+                                "mData" : "callLength",
+                                "orderable" : true, // 禁用排序
+                                "sDefaultContent" : "",
+                                "sWidth" : "8%"
+                            },
+                            {
+                                "mData" : "digits",
+                                "orderable" : false, // 禁用排序
+                                "sDefaultContent" : "",
+                                "sWidth" : "10%",
+
+                            }],
+                        "columnDefs" : [ {
+                                "orderable" : false, // 禁用排序
+                                "targets" : [ 0 ], // 指定的列
+                                "data" : "id",
+                                "render" : function(data, type, row) {
+                                    obj.push(row);
+                                    return '<label><input type="checkbox" name="recordcheck" value="'
+                                            + (obj.length - 1)
+                                            + '" class="ck" id="checkHa"></label>';
+                                }
+                            }],
+
+                    "language" : {
+                        "lengthMenu" : "每页 _MENU_ 条记录",
+                        "zeroRecords" : "没有找到记录",
+                        "info" : "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                        "infoEmpty" : "无记录",
+                        "infoFiltered" : "(从 _MAX_ 条记录过滤)",
+                        "sSearch" : "搜索：",
+                        "oPaginate" : {
+                            "sFirst" : "首页",
+                            "sPrevious" : " 上一页 ",
+                            "sNext" : " 下一页 ",
+                            "sLast" : " 尾页 "
                             }
-                        })
-                    }
-                    else if(data.status=='400')
-                    {
-                        bootbox.alert("修改号码已存在!");
-                    }
-                    else {
-                        bootbox.alert("修改失败，请重新输入!");
-                    }
-                }
-        });
-    });
+                        }
+                    })
+        $("#filters").modal('hide');
+        }
+    })
+
+
+
 });
