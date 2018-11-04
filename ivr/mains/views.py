@@ -5,17 +5,15 @@ from django.contrib.auth import logout
 from mains.models import User
 # 引入密码加密模块
 from django.contrib.auth.hashers import make_password
-# Create your views here.
 
+
+# Create your views here.
 
 def index(request):
     if 'uid' in request.session:
-        uid = request.session.get('uid')
         name = request.session.get('name')
         img = request.session.get('img')
-        obj = User.objects.get(uid=uid)
-        phone = obj.phone
-        return render(request, 'mains/index.html',{'uid':uid,'name':name,'img':img, 'phone':phone})
+        return render(request, 'mains/index.html',{'name':name,'img':img})
     else:
         return redirect('/')
 
@@ -48,5 +46,45 @@ def modify(request):
         else:
             data = {'status':'500'}#表示不是用POST的提交方式，修改失败
             return JsonResponse(data)
+    else:
+        return redirect('/')
+
+def user(request):
+    if 'uid' in request.session:
+        name = request.session.get('name')
+        img = request.session.get('img')
+        return render(request, 'mains/user.html',{'name':name,'img':img})
+    else:
+        return redirect('/')
+
+def getInfo(request):
+    if 'uid' in request.session:
+        uid = request.session.get('uid')
+        name = request.session.get('name')
+        img = request.session.get('img')
+        obj = User.objects.get(pk=uid)
+        phone = obj.phone
+        data ={'name':name,'img':img, 'phone':phone}
+        return JsonResponse(data)
+    else:
+        return redirect('/')
+
+def uploadImg(request):
+    if 'uid' in request.session:
+        if request.method == "POST" and request.is_ajax():
+            uid = request.session.get('uid')
+            f = request.FILES.get('file')
+            try:
+                user = User.objects.get(pk=uid)
+                user.img = f
+                user.save()
+                data = {'status': '200'}
+                #修改session的img值
+                request.session['img'] = user.img.url
+            except:
+                data = {'status': '500'} #头像上传失败
+        else:
+            data = {'status': '500'} #500表示不是POST方式提交，上传失败
+        return JsonResponse(data)
     else:
         return redirect('/')

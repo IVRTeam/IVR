@@ -72,13 +72,12 @@ def loginCheck(request):
             request.session['uid'] = uid
             request.session['name'] = user[0].name
             #request.session['auth'] = user.auth
-            request.session['img'] = user[0].img
+            request.session['img'] = user[0].img.url
             request.session.set_expiry(0)
             data['status'] = 200
-            return JsonResponse(data)
         else:
             data['status'] = 500
-            return JsonResponse(data)
+        return JsonResponse(data)
     else:
         return JsonResponse(data)
 def register(request):
@@ -89,7 +88,7 @@ def registerCheck(request):
     name = request.POST.get("username")
     phone = request.POST.get("phone")
     auth = Auth.objects.get(pk=2)
-    img = '/static/image/big.jpg'
+    img = 'big.jpg'
     data = '200'
     try:
         user = User.createUser(uid, make_password(pwd), name, phone, img, auth)
@@ -97,13 +96,7 @@ def registerCheck(request):
     except:
         data = '500'
     return HttpResponse(data)
-def testSession(request):
-    uid = request.session.get('uid')
-    name = request.session.get('name')
-    #auth = request.session.get('auth')
-    img = request.session.get('img')
-    #data = {'uid': uid, "name": name, "img": img}
-    return render(request, 'logins/testSession.html', {'uid': uid, "name": name, "img": img})
+
 def checkUid(request):
     uid = request.GET.get("uid")
     num = User.objects.filter(pk=uid).count()

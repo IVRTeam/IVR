@@ -149,6 +149,20 @@ $(function(){
                 });
              return;
 		}
+		else // 检查是否11位有效手机号码
+        {
+            var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+                if (!myreg.test(phone)) {
+                    bootbox.alert({
+                        message: "电话号码有误，请重新输入！",
+                        size : 'small',
+                        callback: function () {
+                               $("#phones").val('');
+                            }
+                        });
+                    return;
+                }
+        }
 		if(name=="")
         {
              bootbox.alert({
@@ -319,6 +333,20 @@ $(function(){
                 });
              return;
 		}
+		else // 检查是否11位有效手机号码
+        {
+            var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+                if (!myreg.test(phone)) {
+                    bootbox.alert({
+                        message: "电话号码有误，请重新输入！",
+                        size : 'small',
+                        callback: function () {
+                               $("#Ephone").val('');
+                            }
+                        });
+                    return;
+                }
+        }
 		if(name=="")
         {
              bootbox.alert({
@@ -512,7 +540,6 @@ $(function(){
             }
         });
     });
-
 
     // 导出按钮初始化
     $("#exportButton").click(function() {

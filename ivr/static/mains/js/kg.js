@@ -9,7 +9,7 @@ $("li.menuItem.nav-parent").click(function(){
 	});
 //左侧导航条高度动态设置
 $(".sidebar-menu").css("min-height",screen.height/1.5);
- $(function () {
+    $(function () {
 	 	$(document).on("click", "#msgtable tr", function() {
 			bootbox.dialog({
     		title: $(this).find('td').eq(2).html(),
@@ -17,40 +17,7 @@ $(".sidebar-menu").css("min-height",screen.height/1.5);
 			});
 			$(this).removeClass('read');
 			$(this).addClass('read');
-			
-			
-//			$.ajax({
-//				type : 'POST',
-//				dataType : 'text',
-//				url : 'setReadMessage.do',
-//				data:{
-//					id:$(this).find('td').eq(0).text(),
-//				},
-//				async : false,
-//				cache : false,
-//				error : function(request) {		
-//				},
-//				success : function(data) {	
-//					$(".msg").html(data);
-//				}
-//			});	
-		});
- 
-//      $.ajax({
-//				type : 'POST',
-//				dataType : 'text',
-//				url : 'getNoReadMessageCount.do',
-//				async : false,
-//				cache : false,
-//				error : function(request) {
-//				},
-//				success : function(data) {
-//					$('.msg').html(data);
-//				}
-//			});
-//       $('.text-success').html($.cookie('name'));
-//       $('#imageMain').attr("src",$.cookie('image'));
-      
+        });
  });
  
 
