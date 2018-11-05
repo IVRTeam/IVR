@@ -130,3 +130,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+# 跟STATIC_URL类似，指定用户可以通过这个路径找到文件
+MEDIA_URL="/static/avatar/"
+# 配置用户头像路径
+MEDIA_ROOT=os.path.join(BASE_DIR,"static/avatar")
+

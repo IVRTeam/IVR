@@ -60,29 +60,27 @@
 
 	</style>
 	<script type="text/javascript">
-      //显示悬浮层
+      	//显示悬浮层
 		function showInform(){
 			document.getElementById("inform").style.display='block';
 		}
-      //隐藏悬浮层
+	  	//隐藏悬浮层
 		function hiddenInform(event){
 			var informDiv = document.getElementById('inform');
-			var x=event.clientX;  
-			var y=event.clientY;  
-			var divx1 = informDiv.offsetLeft;  
-			var divy1 = informDiv.offsetTop;  
-			var divx2 = informDiv.offsetLeft + informDiv.offsetWidth;  
+			var x=event.clientX;
+			var y=event.clientY;
+			var divx1 = informDiv.offsetLeft;
+			var divy1 = informDiv.offsetTop;
+			var divx2 = informDiv.offsetLeft + informDiv.offsetWidth;
 			var divy2 = informDiv.offsetTop + informDiv.offsetHeight;
-			if( x < divx1 || x > divx2 || y < divy1 || y > divy2){  
-				document.getElementById('inform').style.display='none';  
-			}          
+			if( x < divx1 || x > divx2 || y < divy1 || y > divy2){
+				document.getElementById('inform').style.display='none';
+			}
 		}
 	</script>
-
- </head>
- <body>
+	</head>
+	<body>
 	<div class="navbar" role="navigation">
-      
         <!-- 点击收缩左边的菜单栏  + 缩小后左边菜单栏的显示 -->
         <ul class="nav navbar-nav navbar-actions navbar-left">
             <li class="visible-md visible-lg"><a href="#"><i class="icon-th-large"></i></a></li>
@@ -125,90 +123,25 @@
     	<div class="row">        	
         	<div class="sidebar">
 				<div class="sidebar-collapse">
-					<!-- Sidebar Header Logo-->
 					<div class="sidebar-header ">
 						<a href="#"><img src="{% static 'image/logo.png' %}" width="7" height="50" alt=""></a>
 					</div>
-					
+
 					<!-- Sidebar Menu-->
 					<div class="sidebar-menu" style="height: 384px;">
 						<nav id="menu" class="nav-main" role="navigation">
 							<ul class="nav nav-sidebar">
 								<div class="panel-body text-center">
 									<div class="bk-avatar">
-										<a id="view_infor" onMouseOver="javascript:showInform();"  onMouseOut="hiddenInform(event)">
-											<img class="img-circle bk-img-60" alt="" src={{img}}>
-										</a>
+										<a href="/mains/user/"><img class="img-circle bk-img-60" alt="" src="{{img}}" id="imageMain"></a>
 										<!--ms-if-->
 									</div>
-									<div id="inform" onMouseOver="javascript:showInform();"  onMouseOut="hiddenInform(event)">
-										<table id="informTable">
-											<tr>
-												<td>
-				 									用户ID号：{{uid}}													
-												</td>
-											</tr>
-											<tr>
-												<td>
-				 									用户姓名：{{name}}
-													
-												</td>
-											</tr>
-											<tr>
-												<td>
-				 									联系电话：{{phone}}														
-												</td>
-											</tr>
-										</table>
-									</div>
 									<div class="bk-padding-top-10">
-										<i class="icon-circle text-success"></i> 
+										<i class="icon-circle text-success"></i>
 										<small>{{name}}</small>
 										<!--ms-if-->
 									</div>
-									<div>
-									<!-- 按钮触发模态框 -->
-										<button class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">修改资料</button>
-										<!-- 模态框（Modal） -->
-										<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-											<div class="modal-dialog">
-												<div class="modal-content">
-													<div class="modal-header">
-														<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-														<h4 class="modal-title" id="myModalLabel">个人资料修改</h4>
-													</div>
-													<div class="modal-body">
-													<label class="control-label visible-ie8 visible-ie9">用户昵称</label>
-													<div class="input-icon">
-															<i class="icon-user"></i>
-															<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="用户昵称" name="name_alt" id="alt_name"/>
-														</div>
-													</div>
-													<div class="modal-body">
-													<label class="control-label visible-ie8 visible-ie9">密码</label>
-													<div class="input-icon">
-															<i class="icon-lock"></i>
-															<input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="新密码" name="pwd_alt" id="alt_pwd"/>
-														</div>
-													</div>
-													<div class="modal-body">
-													<label class="control-label visible-ie8 visible-ie9">联系电话</label>
-													<div class="input-icon">
-															<i class="icon-phone"></i>
-															<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="电话号码" name="phone_alt" id="alt_phone"/>
-														</div>
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-														<button type="submit" class="btn btn-primary" onclick="btnModify()">提交更改</button>
-													</div>
-												</div><!-- /.modal-content -->
-											</div><!-- /.modal -->
-										</div>
-									</div>
 								</div>
-								<div class="divider2"></div>							
-								
 								<li class="menuItem">
 									<a href="/mains">
 										<i class="icon-home" aria-hidden="true"></i><span>主界面</span>
@@ -221,14 +154,13 @@
 									</a>
 									<ul class="nav nav-children">
 										<li><a href="/calls/"><span class="text">号码管理</span></a></li>
-										<li><a href="/calls/stateManager/"><span class="text">呼叫管理</span></a></li>
+										<li><a href="/calls/stateManager/"><span class="text">通话记录</span></a></li>
 										<li><a href="#"><span class="text">模板管理</span></a></li>
-										
 									</ul>
 								</li>
 								<li class="menuItem nav-parent">
 									<a>
-										<i class="icon-gear" aria-hidden="true"></i><span>我的套餐</span>
+										<i class="icon-user" aria-hidden="true"></i><span>我的套餐</span>
 									</a>
 									<ul class="nav nav-children">
 										<li><a href="#"><span class="text">套餐管理</span></a></li>
@@ -241,53 +173,27 @@
 								</a>						 																	
 							</ul>
 						</nav>
-					</div>
-					<!-- End Sidebar Menu-->
-				</div>
-					<!-- Sidebar Footer-->
+					</div><!-- End Sidebar Menu-->
+				</div><!-- End sidebar-collapse-->
+
 					<div class="sidebar-footer">
 						<div class="copyright text-center">
-							
 						</div>
 					</div>
-					<!-- End Sidebar Footer-->
-			</div>   <!-- End Sidebar--> 
-		        
-                
-			<div class="main " style="min-height: 584px;">
-				<!-- 当前地址导航 -->
-				<div class="page-header row">
-					<div class="pull-left">
-						<ol class="breadcrumb visible-sm visible-md visible-lg">
-							<li><a href="#">位置  :</a></li>
-							<li><a href="/mains"><i class=" icon-home"></i>首页</a></li>
-						</ol>
-					</div>
-					<div class="pull-right">
-						<ol class="breadcrumb visible-sm visible-md visible-lg">
-							<li><a href="/calls/stateManager/"><i class=" icon-building"></i>呼叫管理</a></li>
-							<li><a href="#"><i class="icon-legal"></i>模板管理</a></li>
-							<li><a href="#"><i class="icon-user"></i>套餐管理</a></li>
-							<li><a href="#"><i class="icon-home"></i>套餐购买</a></li>
-						</ol>
-					</div>
-				</div>
-				<!--此处放主面板内容 -->
-                <script src="{%static 'js/jquery.min.js' %}"></script>
-                <script src="{%static 'js/bootstrap.min.js' %}"></script>
-				{% block content %}{% endblock %}
-			</div><!--end main-->
+			</div>   <!-- End Sidebar-->
+			<!--此处放主面板内容 -->
+			<script src="{%static 'js/jquery.min.js' %}"></script>
+			<script src="{%static 'js/bootstrap.min.js' %}"></script>
+			{% block content %}{% endblock %}
 		</div><!--end row-->
-	</div>
+	</div> <!--end content-->
 	<div class="clearfix"></div><!--清除浮动-->
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 
-
     <!-- Include all compiled plugins (below), or include individual files as needed -->
 
-    
     <script src="{%static 'mains/js/kg.js' %}"></script>
 	<script src="{% static 'js/bootbox.min.js' %}" type="text/javascript"></script>
-	<script src="{%static 'mains/js/myJS.js' %}"></script>
+	
 </body>
 </html>

@@ -23,7 +23,7 @@ class User(models.Model):
     # 用户手机号
     phone = models.CharField(max_length=50)
     # 用户头像
-    img = models.CharField(max_length=200)
+    img = models.ImageField(upload_to='')
     # 用户注册时间
     regTime = models.DateField(auto_now=True)
     # 外键

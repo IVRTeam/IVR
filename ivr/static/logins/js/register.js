@@ -6,6 +6,18 @@ function btnAction()
         }
     else
     {
+        var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+        var phone=$("#phones").val();
+        if (!myreg.test(phone)) {
+            bootbox.alert({
+                message: "电话号码有误，请重新输入！",
+                size : 'small',
+                callback: function () {
+                       $("#phones").val('');
+                    }
+                });
+            return;
+        }
         $.ajax({
             type: 'GET',
             dataType: 'json',

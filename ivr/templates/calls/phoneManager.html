@@ -1,251 +1,270 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block content %}
+<!--中间部分-->
+<div class="main " style="min-height: 584px;">
+	<!-- 当前地址导航 -->
+	<div class="page-header row">
+		<div class="pull-left">
+			<ol class="breadcrumb visible-sm visible-md visible-lg">
+				<li><a href="#">位置  :</a></li>
+				<li><a href="/calls/stateManager/"><i class=" icon-phone"></i>号码管理</a></li>
+			</ol>
+		</div>
+		<div class="pull-right">
+			<ol class="breadcrumb visible-sm visible-md visible-lg">
+				<li><a href="/calls/stateManager/"><i class="icon-building"></i>通话记录</a></li>
+				<li><a href="#"><i class="icon-gear"></i>模板管理</a></li>
+				<li><a href="#"><i class="icon-user"></i>套餐管理</a></li>
+				<li><a href="#"><i class="icon-legal"></i>套餐购买</a></li>
+			</ol>
+		</div>
+	</div>
+	<!--此处放主面板内容 -->
+    <link rel="stylesheet" type="text/css" href="{%static 'css/jquery.dataTables.min.css' %}">
+    <link type="text/css" rel="stylesheet" href="{%static 'css/dataTables.tableTools.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{%static 'css/dataTables.bootstrap.min.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{%static 'calls/css/practicebaseapply.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{%static 'calls/css/phoneManager.css' %}" />
+    <table id="calls" class="table table-bordered table-condensed">
+        <thead>
+            <tr bgcolor="#ECF1F5">
+                <td colspan="7" id="button-left">
+                    <button type="button" class="btn btn-danger" id="delete">删除</button>
+                    <button type="button" class="btn btn-info" id="ZJ">增加</button>
+                    <button type="button" class="btn btn-danger" id="HJ">呼叫</button>
+                </td>
+                <td colspan="12" id="button-right">
+                    <button type="button" class="btn btn-primary" id="exportButton" data-toggle="modal" data-target="#export">导出</button>
+                    <button type="button" class="btn btn-primary" id="importButton" data-toggle="modal" data-target="#import" >导入</button>
+                    <a href="{%static 'calls/PhoneModel.xltx' %}" id="LinkButton" download="PhoneModel.xltx" class="btn btn-primary" >点击下载导入模板</a>
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <th hidden></th>
+                <th>电话号码</th>
+                <th>用户姓名</th>
+                <th>电话地区</th>
+                <th>已呼叫次数</th>
+                <th>用户星级</th>
+                <th>导入时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody class="text-center" id="thistable"></tbody>
+        <thead>
+            <tr>
+                <td colspan="11"><label><input type="checkbox" name="0" class="ck-all" id="ck1" />全选</label></td>
+            </tr>
+        </thead>
+    </table>
+    <!--增加电话start  -->
+    <div class="modal-content" id="add" style="border:#3071a9 8px solid;overflow-x:hidden;">
+    <div class="modal-header" style="background:#3071a9; color:#FFF">
+        <div id="closebas" class="glyphicon glyphicon-remove closeModal" data-dismiss="modal" ></div>
+        <h4 class="modal-title text-center" id="myModalLabe2">增加电话</h4>
+    </div>
+    <div class="modal-body table-responsive" id="modalbody">
+         <div class="row" style="margin-right:0px;">
+                <div class="col-md-12">
+                    <form id="myForm" class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">电话号码<span class="setTag">*</span></label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="phones" name="phone" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">姓名<span class="setTag">*</span></label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="names" name="name" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">地址<span class="setTag">*</span></label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="addresss" name="address" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">用户等级<span class="setTag">*</span></label>
+                            <div class="col-md-6">
+                                <select class="form-control" id="stars" name="star">
+                                    <option id="0" value="">请选择</option>
+                                    <option value="1">一般</option>
+                                    <option value="2">重要</option>
+                                    <option value="3">非常重要</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-5 col-sm-4">
+                                <button id="submitForm_0" type="button" class="btn btn-primary">确定</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<link rel="stylesheet" type="text/css" href="{%static 'css/jquery.dataTables.min.css' %}">
-<link type="text/css" rel="stylesheet" href="{%static 'css/dataTables.tableTools.css' %}" />
-<link type="text/css" rel="stylesheet" href="{%static 'css/dataTables.bootstrap.min.css' %}" />
-<link type="text/css" rel="stylesheet" href="{%static 'calls/css/practicebaseapply.css' %}" />
-<link type="text/css" rel="stylesheet" href="{%static 'calls/css/phoneManager.css' %}" />
-<table id="calls" class="table table-bordered table-condensed">
-    <thead>
-        <tr bgcolor="#ECF1F5">
-            <td colspan="7" id="button-left">
-                <button type="button" class="btn btn-danger" id="delete">删除</button>
-                <button type="button" class="btn btn-info" id="ZJ">增加</button>
-                <button type="button" class="btn btn-danger" id="HJ">呼叫</button>
-            </td>
-            <td colspan="12" id="button-right">
-                <button type="button" class="btn btn-primary" id="exportButton" data-toggle="modal" data-target="#export">导出</button>
-                <button type="button" class="btn btn-primary" id="importButton" data-toggle="modal" data-target="#import" >导入</button>
-                <a href="{%static 'calls/PhoneModel.xltx' %}" id="LinkButton" download="PhoneModel.xltx" class="btn btn-primary" >点击下载导入模板</a>
-            </td>
-        </tr>
-        <tr>
-            <th></th>
-            <th hidden></th>
-            <th>电话号码</th>
-            <th>用户姓名</th>
-            <th>电话地区</th>
-            <th>已呼叫次数</th>
-            <th>用户星级</th>
-            <th>导入时间</th>
-            <th>操作</th>
-        </tr>
-    </thead>
-    <tbody class="text-center" id="thistable"></tbody>
-    <thead>
-        <tr>
-            <td colspan="11"><label><input type="checkbox" name="0" class="ck-all" id="ck1" />全选</label></td>
-        </tr>
-    </thead>
-</table>
-<!--增加电话start  -->
-<div class="modal-content" id="add" style="border:#3071a9 8px solid;overflow-x:hidden;">
-<div class="modal-header" style="background:#3071a9; color:#FFF">
-    <div id="closebas" class="glyphicon glyphicon-remove closeModal" data-dismiss="modal" ></div>
-    <h4 class="modal-title text-center" id="myModalLabe2">增加电话</h4>
-</div>
-<div class="modal-body table-responsive" id="modalbody">
-     <div class="row" style="margin-right:0px;">
-            <div class="col-md-12">
-                <form id="myForm" class="form-horizontal" role="form">
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">电话号码<span class="setTag">*</span></label>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" id="phones" name="phone" placeholder="">
+    <!--单个删除确认对话框-->
+    <div class="modal fade" id="deleteOneModal" tabindex="-1"
+        role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <!-- data-backdrop="static" 禁止点击弹框后面内容 -->
+        <form class="form-horizontal" role="form">
+            <div class="modal-dialog modal-sm ">
+                <!-- modal-sm 小的  modal-lg 大的 -->
+                <div class="modal-content" style="border:#4D719B 8px solid">
+                    <div class="modal-header" style="background:#4D719B; color:#FFF">
+                        <div class="glyphicon glyphicon-remove closeModal"
+                            data-dismiss="modal"></div>
+                        <h6 class="modal-title" id="myModalLabel"></h6>
+                    </div>
+                    <div class="modal-body" style="text-align: left;">
+                        <h5>您确定要删除吗？</h5>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-default"
+                            data-dismiss="modal">取消</button>
+
+                        <button type="button" class="btn btn-primary" id="delSubmit">
+                            确认</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </form>
+    </div>
+
+
+    <!--修改-->
+    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabe" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border:#3071a9 8px solid">
+                <div class="modal-header" style="background:#3071a9; color:#FFF">
+                    <div class="glyphicon glyphicon-remove closeModal" data-dismiss="modal"></div>
+                    <h4 class="modal-title text-center" id="myModalLabe3">详情及修改</h4>
+                </div>
+                <div class="modal-body table-responsive">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="" method="post" class="form-horizontal" role="form" id="applyeditform">
+                                <table class="table" id="tableupdate">
+                                    <tr>
+                                        <td><input type="text" id="Epid" style="display:none"/></td>
+                                        <td><input type="text" id="Ephones" style="display:none"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>电话号码：</td>
+                                        <td><input type="text" id="Ephone" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>用户姓名：</td>
+                                        <td><input type="text" id="Ename" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>用户地址：</td>
+                                        <td><input type="text" id="Eaddress" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>已呼叫次数：</td>
+                                        <td><input type="text" id="Enum" disabled/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>用户星级：</td>
+                                        <td>
+                                            <select class="form-control"  id="Estar"name="TYPE">
+                                            <option id="0" value="">请选择</option>
+                                            <option value="1">一般</option>
+                                            <option value="2">重要</option>
+                                            <option value="3">非常重要</option>
+                                        </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>导入时间：</td>
+                                        <td><input type="text" id="EcreateTime" disabled/></td>
+                                    </tr>
+                                </table>
+                            </form>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">姓名<span class="setTag">*</span></label>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" id="names" name="name" placeholder="">
-                        </div>
+                </div>
+                <div class="modal-footer table-responsive">
+                    <center>
+                        <button type="button" class="btn btn-primary" id="saverun">保存</button>
+                        <button type="button" class="btn btn-default" id="cleark" data-dismiss="modal">取消</button>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--导入-->
+    <div class="modal fade" id="import" tabindex="-1" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" >
+            <div class="modal-content" style="border:#3071a9 8px solid;overflow-x:hidden;">
+                <div class="modal-header" style="background:#3071a9; color:#FFF">
+                    <div class="glyphicon glyphicon-remove closeModal" data-dismiss="modal"></div>
+                    <h5 class="modal-title" id="myModalLabel">请选择要导入的文件</h5>
+                </div>
+                <center>
+                    <div class="modal-body" id="exportxsl" style="height:100px;">
+                        请选择文件的上传类型:&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="uptype" value="1" checked="checked">新增&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="uptype" value="2">覆盖
+                        <br><br>
+                        <input type="file" name="file" id="btn_file"/>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">地址<span class="setTag">*</span></label>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" id="addresss" name="address" placeholder="">
-                        </div>
+                </center>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="certainimport">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--导出-->
+    <div class="modal fade" id="export" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:400px;height:600px;">
+            <div class="modal-content" style="border:#3071a9 8px solid;">
+                <div class="modal-header" style="background:#3071a9; color:#FFF">
+                    <div id="daoclose" class="glyphicon glyphicon-remove closeModal"
+                        data-dismiss="modal"></div>
+                    <h4 class="modal-title" id="myModalLabel">请选择导出的电话清单</h4>
+                </div>
+                <form action="/calls/fileExport/" method="get">
+                    <div class="modal-body" id="daochu">
+                        <table>
+                            <tr>
+                                <td>用户星级:</td>
+                                <td>
+                                    <select class="form-control" id="daostarh" name="star">
+                                        <option value="0">全部</option>
+                                        <option value="1">一星级</option>
+                                        <option value="2">二星级</option>
+                                        <option value="3">三星级</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">用户等级<span class="setTag">*</span></label>
-                        <div class="col-md-6">
-                            <select class="form-control" id="stars" name="star">
-                                <option id="0" value="">请选择</option>
-                                <option value="1">一般</option>
-                                <option value="2">重要</option>
-                                <option value="3">非常重要</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-5 col-sm-4">
-                            <button id="submitForm_0" type="button" class="btn btn-primary">确定</button>
-                        </div>
+                    <div class="modal-footer">
+                        <center>
+                            <button type="button" class="btn btn-default" id="daoclose" data-dismiss="modal">取消</button>
+                            <button type="submit" class="btn btn-primary" id="confirmButton">确定</button>
+                        </center>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-<!--单个删除确认对话框-->
-<div class="modal fade" id="deleteOneModal" tabindex="-1"
-    role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <!-- data-backdrop="static" 禁止点击弹框后面内容 -->
-    <form class="form-horizontal" role="form">
-        <div class="modal-dialog modal-sm ">
-            <!-- modal-sm 小的  modal-lg 大的 -->
-            <div class="modal-content" style="border:#4D719B 8px solid">
-                <div class="modal-header" style="background:#4D719B; color:#FFF">
-                    <div class="glyphicon glyphicon-remove closeModal"
-                        data-dismiss="modal"></div>
-                    <h6 class="modal-title" id="myModalLabel"></h6>
-                </div>
-                <div class="modal-body" style="text-align: left;">
-                    <h5>您确定要删除吗？</h5>
-                </div>
-                <div class="modal-footer">
-
-                    <button type="button" class="btn btn-default"
-                        data-dismiss="modal">取消</button>
-
-                    <button type="button" class="btn btn-primary" id="delSubmit">
-                        确认</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-    </form>
-</div>
-
-
-<!--修改-->
-<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabe" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content" style="border:#3071a9 8px solid">
-            <div class="modal-header" style="background:#3071a9; color:#FFF">
-                <div class="glyphicon glyphicon-remove closeModal" data-dismiss="modal"></div>
-                <h4 class="modal-title text-center" id="myModalLabe3">详情及修改</h4>
-            </div>
-            <div class="modal-body table-responsive">
-                <div class="row">
-                    <div class="col-md-12">
-                        <form action="" method="post" class="form-horizontal" role="form" id="applyeditform">
-                            <table class="table" id="tableupdate">
-                                <tr>
-                                    <td><input type="text" id="Epid" style="display:none"/></td>
-                                    <td><input type="text" id="Ephones" style="display:none"/></td>
-                                </tr>
-                                <tr>
-                                    <td>电话号码：</td>
-                                    <td><input type="text" id="Ephone" /></td>
-                                </tr>
-                                <tr>
-                                    <td>用户姓名：</td>
-                                    <td><input type="text" id="Ename" /></td>
-                                </tr>
-                                <tr>
-                                    <td>用户地址：</td>
-                                    <td><input type="text" id="Eaddress" /></td>
-                                </tr>
-                                <tr>
-                                    <td>已呼叫次数：</td>
-                                    <td><input type="text" id="Enum" disabled/></td>
-                                </tr>
-                                <tr>
-                                    <td>用户星级：</td>
-                                    <td>
-                                        <select class="form-control"  id="Estar"name="TYPE">
-                                        <option id="0" value="">请选择</option>
-                                        <option value="1">一般</option>
-                                        <option value="2">重要</option>
-                                        <option value="3">非常重要</option>
-                                    </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>导入时间：</td>
-                                    <td><input type="text" id="EcreateTime" disabled/></td>
-                                </tr>
-                            </table>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer table-responsive">
-                <center>
-                    <button type="button" class="btn btn-primary" id="saverun">保存</button>
-                    <button type="button" class="btn btn-default" id="cleark" data-dismiss="modal">取消</button>
-                </center>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!--导入-->
-<div class="modal fade" id="import" tabindex="-1" role="dialog" aria-label="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" >
-        <div class="modal-content" style="border:#3071a9 8px solid;overflow-x:hidden;">
-            <div class="modal-header" style="background:#3071a9; color:#FFF">
-                <div class="glyphicon glyphicon-remove closeModal" data-dismiss="modal"></div>
-                <h5 class="modal-title" id="myModalLabel">请选择要导入的文件</h5>
-            </div>
-            <center>
-                <div class="modal-body" id="exportxsl" style="height:100px;">
-                    请选择文件的上传类型:&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="radio" name="uptype" value="1" checked="checked">新增&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="radio" name="uptype" value="2">覆盖
-                    <br><br>
-                    <input type="file" name="file" id="btn_file"/>
-                </div>
-            </center>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="certainimport">确定</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--导出-->
-<div class="modal fade" id="export" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width:400px;height:600px;">
-        <div class="modal-content" style="border:#3071a9 8px solid;">
-            <div class="modal-header" style="background:#3071a9; color:#FFF">
-                <div id="daoclose" class="glyphicon glyphicon-remove closeModal"
-                    data-dismiss="modal"></div>
-                <h4 class="modal-title" id="myModalLabel">请选择导出的电话清单</h4>
-            </div>
-            <form action="/calls/fileExport/" method="get">
-                <div class="modal-body" id="daochu">
-                    <table>
-                        <tr>
-                            <td>用户星级:</td>
-                            <td>
-                                <select class="form-control" id="daostarh" name="star">
-                                    <option value="0">全部</option>
-                                    <option value="1">一星级</option>
-                                    <option value="2">二星级</option>
-                                    <option value="3">三星级</option>
-                                </select>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <center>
-                        <button type="button" class="btn btn-default" id="daoclose" data-dismiss="modal">取消</button>
-                        <button type="submit" class="btn btn-primary" id="confirmButton">确定</button>
-                    </center>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 <script type="text/javascript" src="{%static 'js/jquery.dataTables.min.js' %}"></script>
 <script type="text/javascript" src="{%static 'calls/js/phoneManager.js' %}"></script>
 {% endblock %}

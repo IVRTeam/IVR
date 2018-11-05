@@ -11,12 +11,9 @@ import xlwt
 # Create your views here.
 def phoneManager(request):
     if 'uid' in request.session:
-        uid = request.session.get('uid')
         name = request.session.get('name')
         img = request.session.get('img')
-        obj = User.objects.get(uid=uid)
-        phone = obj.phone
-        return render(request, 'calls/phoneManager.html', {'uid': uid, 'name': name, 'img': img, 'phone': phone})
+        return render(request, 'calls/phoneManager.html', {'name': name, 'img': img})
     else:
         return redirect('/')
 def datas(request):
@@ -160,12 +157,9 @@ def callNumber(request):
 # 显示电话状态页面
 def stateManager(request):
     if 'uid' in request.session:
-        uid = request.session.get('uid')
         name = request.session.get('name')
         img = request.session.get('img')
-        obj = User.objects.get(uid=uid)
-        phone = obj.phone
-        return render(request, 'calls/stateManager.html', {'uid': uid, 'name': name, 'img': img, 'phone': phone})
+        return render(request, 'calls/stateManager.html', {'name': name, 'img': img})
     else:
         return redirect('/')
 def stateDatas(request):
@@ -283,7 +277,7 @@ def fileImport(request):
                 data = {'status': '400'} #400表示上传的不是模板文件
                 return JsonResponse(data)
         else:
-            data = {'status': '500'} #500表示上传失败
+            data = {'status': '500'} #500表示不是POST方式提交，上传失败
         return JsonResponse(data)
     else:
         return redirect('/')
