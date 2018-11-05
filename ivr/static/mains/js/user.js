@@ -1,5 +1,15 @@
 function previewImage(file)
 {
+      //判断文件是否为jpg,jpeg,png
+      var fireStr = $("#file").val();
+      var fireL = fireStr.lastIndexOf(".");
+      fireStr = fireStr.substring(fireL);
+      if(fireStr != ".jpg" && fireStr!=".jpeg" && fireStr!=".png"){
+          bootbox.alert({
+              message:"请导入格式后缀名为.jpg/.jpeg/.png的照片",
+          });
+          return;
+      }
       var MAXWIDTH  = 120;
       var MAXHEIGHT = 120;
       var div = document.getElementById('preview');
