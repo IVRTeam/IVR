@@ -5,6 +5,8 @@ from django.contrib.auth import logout
 from mains.models import User
 # 引入密码加密模块
 from django.contrib.auth.hashers import make_password
+import os
+
 
 
 # Create your views here.
@@ -64,10 +66,11 @@ def getInfo(request):
         img = request.session.get('img')
         obj = User.objects.get(pk=uid)
         phone = obj.phone
-        data ={'name':name,'img':img, 'phone':phone}
+        data ={'name':name,'img':img,'phone':phone}
         return JsonResponse(data)
     else:
         return redirect('/')
+
 
 def uploadImg(request):
     if 'uid' in request.session:
@@ -76,8 +79,18 @@ def uploadImg(request):
             f = request.FILES.get('file')
             try:
                 user = User.objects.get(pk=uid)
+                #保存之前的图片路径
+                past_file_path = user.img.url #相对路径
+                current_path = os.getcwd() #当前工作路径
+                full_file_path = current_path + past_file_path #绝对路径
+                #保存修改后的图片
                 user.img = f
                 user.save()
+                #删除之前的图片
+                if past_file_path != '/static/avatar/big.jpg':
+                    if os.path.exists(full_file_path):
+                        if os.path.isfile(full_file_path):
+                            os.remove(full_file_path)#删除图片
                 data = {'status': '200'}
                 #修改session的img值
                 request.session['img'] = user.img.url
