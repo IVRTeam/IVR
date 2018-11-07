@@ -60,7 +60,6 @@ def dial(con, cmd_out, number):
                     cmd_bridge = 'uuid_bridge ' + uuid1 + ' ' + uuid2
                     print(cmd_bridge)
                     con.bgapi(cmd_bridge)
-                    break
                 elif dtmf == '1':
                     cmd_stop = 'uuid_break ' + uuid1 + ' all'
                     con.bgapi(cmd_stop)
@@ -103,7 +102,6 @@ def dial(con, cmd_out, number):
                     hangup = 'uuid_kill ' + uuid1
                     print(hangup)
                     con.api(hangup)
-                    break
     print('Over!')
     con.disconnect()
     return duration, keys
