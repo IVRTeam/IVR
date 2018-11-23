@@ -169,6 +169,10 @@ $(function(){
             }
         });
     });
+    //点击全部显示按钮
+    $("#showall").click(function() {
+        $(location).attr('href', '/calls/stateManager/');
+    });
     // 点击筛选按钮，弹出筛选框
     $("#filter").click(function() {
         $("#callState").val("");
