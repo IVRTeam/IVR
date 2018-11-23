@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from mains.models import User
+# 引入存储过程模块
+from django.db import connection
 # 引入密码加密模块
 from django.contrib.auth.hashers import make_password
 import os
@@ -15,7 +17,17 @@ def index(request):
     if 'uid' in request.session:
         name = request.session.get('name')
         img = request.session.get('img')
-        return render(request, 'mains/index.html',{'name':name,'img':img})
+        uid = request.session.get('uid')
+        cursor = connection.cursor()
+        cursor.callproc("mains", (uid, 1, 2, 3))
+        cursor.execute('select @_mains_1,@_mains_2,@_mains_3')
+        row = cursor.fetchone()
+        callSuccess = row[0]
+        callFailure = row[1]
+        callLengths = (round(row[2]/60,2))
+        cursor.close()
+        connection.close()
+        return render(request, 'mains/index.html',{'name':name,'img':img,'callSuccess':callSuccess,'callFailure':callFailure,'callLengths':callLengths})
     else:
         return redirect('/')
 
